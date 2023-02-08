@@ -1,3 +1,5 @@
+#Fale checkmate, stalemate, neki win screen nakon checkmatea, neki meni, mozda ljepsi izgled malo, indikator za check
+
 import pygame
 import os
 
@@ -7,7 +9,7 @@ pygame.mixer.init()
 
 WIDTH, HEIGHT = 600, 600
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Azere lezi dole!")
+pygame.display.set_caption("Chess")
 
 SQUARE = pygame.Rect(0, 0, 75, 75)
 squares = []
@@ -94,6 +96,597 @@ def enemy_colision(self, x, y):
                 return objekat
     return 'None'
 
+def king_checked(pieces):
+    for objekat in pieces:
+        if objekat.color == "white":
+            if objekat.obj == "Pawn":
+                if enemy_colision(objekat, objekat.x + 75, objekat.y - 75) != "None":
+                    if enemy_colision(objekat, objekat.x + 75, objekat.y - 75).obj == "King":
+                        return objekat
+                if enemy_colision(objekat, objekat.x - 75, objekat.y - 75) != "None":
+                    if enemy_colision(objekat, objekat.x - 75, objekat.y - 75).obj == "King":
+                        return objekat
+        else:
+            if objekat.obj == "Pawn":
+                if enemy_colision(objekat, objekat.x + 75, objekat.y + 75) != "None":
+                    if enemy_colision(objekat, objekat.x + 75, objekat.y + 75).obj == "King":
+                        return objekat
+                if enemy_colision(objekat, objekat.x - 75, objekat.y + 75) != "None":
+                    if enemy_colision(objekat, objekat.x - 75, objekat.y + 75).obj == "King":
+                        return objekat
+
+        if objekat.obj == "Knight":
+            if enemy_colision(objekat, objekat.x + 75, objekat.y + 150) != "None":
+                if enemy_colision(objekat, objekat.x + 75, objekat.y + 150).obj == "King":
+                    return objekat
+
+            if enemy_colision(objekat, objekat.x - 75, objekat.y + 150) != "None":
+                if enemy_colision(objekat, objekat.x - 75, objekat.y + 150).obj == "King":
+                    return objekat
+
+            if enemy_colision(objekat, objekat.x + 75, objekat.y - 150) != "None":
+                if enemy_colision(objekat, objekat.x + 75, objekat.y - 150).obj == "King":
+                    return objekat
+
+            if enemy_colision(objekat, objekat.x - 75, objekat.y - 150) != "None":
+                if enemy_colision(objekat, objekat.x - 75, objekat.y - 150).obj == "King":
+                    return objekat
+
+            if enemy_colision(objekat, objekat.x + 150, objekat.y + 75) != "None":
+                if enemy_colision(objekat, objekat.x + 150, objekat.y + 75).obj == "King":
+                    return objekat
+
+            if enemy_colision(objekat, objekat.x + 150, objekat.y - 75) != "None":
+                if enemy_colision(objekat, objekat.x + 150, objekat.y - 75).obj == "King":
+                    return objekat
+
+            if enemy_colision(objekat, objekat.x - 150, objekat.y + 75) != "None":
+                if enemy_colision(objekat, objekat.x - 150, objekat.y + 75).obj == "King":
+                    return objekat
+
+            if enemy_colision(objekat, objekat.x - 150, objekat.y - 75) != "None":
+                if enemy_colision(objekat, objekat.x - 150, objekat.y - 75).obj == "King":
+                    return objekat
+
+        if objekat.obj == "Bishop":
+            novix = objekat.x
+            noviy = objekat.y
+            prvi = True
+            drugi = True
+            treci = True
+            cetvrti = True
+            for i in range(7):
+                if prvi == True:
+                    if enemy_colision(objekat, novix + (i * 75) + 75, noviy + (i * 75) + 75) != "None":
+                        if enemy_colision(objekat, novix + (i * 75) + 75, noviy + (i * 75) + 75).obj == "King":
+                            return objekat
+                        else:
+                            prvi = False
+                if ally_colision(objekat, novix + (i * 75) + 75, noviy + (i * 75) + 75) != "None":
+                    prvi = False
+
+                if drugi == True:
+                    if enemy_colision(objekat, novix + (i * 75) + 75, noviy - (i * 75) - 75) != "None":
+                        if enemy_colision(objekat, novix + (i * 75) + 75, noviy - (i * 75) - 75).obj == "King":
+                            return objekat
+                        else:
+                            drugi = False
+                    if ally_colision(objekat, novix + (i * 75) + 75, noviy - (i * 75) - 75) != "None":
+                        drugi = False
+
+                if treci == True:
+                    if enemy_colision(objekat, novix - (i * 75) - 75, noviy + (i * 75) + 75) != "None":
+                        if enemy_colision(objekat, novix - (i * 75) - 75, noviy + (i * 75) + 75).obj == "King":
+                            return objekat
+                        else:
+                            treci = False
+                    if ally_colision(objekat, novix - (i * 75) - 75, noviy + (i * 75) + 75) != "None":
+                        treci = False
+
+                if cetvrti == True:
+                    if enemy_colision(objekat, novix - (i * 75) - 75, noviy - (i * 75) - 75) != "None":
+                        if enemy_colision(objekat, novix - (i * 75) - 75, noviy - (i * 75) - 75).obj == "King":
+                            return objekat
+                        else:
+                            cetvrti = False
+                    if ally_colision(objekat, novix - (i * 75) - 75, noviy - (i * 75) - 75) != "None":
+                        cetvrti = False
+
+        if objekat.obj == "Rook":
+            novix = objekat.x
+            noviy = objekat.y
+            prvi = True
+            drugi = True
+            treci = True
+            cetvrti = True
+            for i in range(7):
+                if prvi == True:
+                    if enemy_colision(objekat, novix + (i * 75) + 75, noviy) != "None":
+                        if enemy_colision(objekat, novix + (i * 75) + 75, noviy).obj == "King":
+                            return objekat
+                        else:
+                            prvi = False
+                if ally_colision(objekat, novix + (i * 75) + 75, noviy) != "None":
+                    prvi = False
+
+                if drugi == True:
+                    if enemy_colision(objekat, novix, noviy - (i * 75) - 75) != "None":
+                        if enemy_colision(objekat, novix, noviy - (i * 75) - 75).obj == "King":
+                            return objekat
+                        else:
+                            drugi = False
+                    if ally_colision(objekat, novix, noviy - (i * 75) - 75) != "None":
+                        drugi = False
+
+                if treci == True:
+                    if enemy_colision(objekat, novix, noviy + (i * 75) + 75) != "None":
+                        if enemy_colision(objekat, novix, noviy + (i * 75) + 75).obj == "King":
+                            return objekat
+                        else:
+                            treci = False
+                    if ally_colision(objekat, novix, noviy + (i * 75) + 75) != "None":
+                        treci = False
+
+                if cetvrti == True:
+                    if enemy_colision(objekat, novix - (i * 75) - 75, noviy) != "None":
+                        if enemy_colision(objekat, novix - (i * 75) - 75, noviy).obj == "King":
+                            return objekat
+                        else:
+                            cetvrti = False
+                    if ally_colision(objekat, novix - (i * 75) - 75, noviy) != "None":
+                        cetvrti = False
+
+        if objekat.obj == "Queen":
+            novix = objekat.x
+            noviy = objekat.y
+            prvi = True
+            drugi = True
+            treci = True
+            cetvrti = True
+            peti = True
+            sesti = True
+            sedmi = True
+            osmi = True
+            for i in range(7):
+
+                if prvi == True:
+                    if enemy_colision(objekat, novix + (i * 75) + 75, noviy + (i * 75) + 75) != "None":
+                        if enemy_colision(objekat, novix + (i * 75) + 75, noviy + (i * 75) + 75).obj == "King":
+                            return objekat
+                        else:
+                            prvi = False
+                if ally_colision(objekat, novix + (i * 75) + 75, noviy + (i * 75) + 75) != "None":
+                    prvi = False
+
+                if drugi == True:
+                    if enemy_colision(objekat, novix + (i * 75) + 75, noviy - (i * 75) - 75) != "None":
+                        if enemy_colision(objekat, novix + (i * 75) + 75, noviy - (i * 75) - 75).obj == "King":
+                            return objekat
+                        else:
+                            drugi = False
+                    if ally_colision(objekat, novix + (i * 75) + 75, noviy - (i * 75) - 75) != "None":
+                        drugi = False
+
+                if treci == True:
+                    if enemy_colision(objekat, novix - (i * 75) - 75, noviy + (i * 75) + 75) != "None":
+                        if enemy_colision(objekat, novix - (i * 75) - 75, noviy + (i * 75) + 75).obj == "King":
+                            return objekat
+                        else:
+                            treci = False
+                    if ally_colision(objekat, novix - (i * 75) - 75, noviy + (i * 75) + 75) != "None":
+                        treci = False
+
+                if cetvrti == True:
+                    if enemy_colision(objekat, novix - (i * 75) - 75, noviy - (i * 75) - 75) != "None":
+                        if enemy_colision(objekat, novix - (i * 75) - 75, noviy - (i * 75) - 75).obj == "King":
+                            return objekat
+                        else:
+                            cetvrti = False
+                    if ally_colision(objekat, novix - (i * 75) - 75, noviy - (i * 75) - 75) != "None":
+                        cetvrti = False
+
+                if peti == True:
+                    if enemy_colision(objekat, novix + (i * 75) + 75, noviy) != "None":
+                        if enemy_colision(objekat, novix + (i * 75) + 75, noviy).obj == "King":
+                            return objekat
+                        else:
+                            peti = False
+                if ally_colision(objekat, novix + (i * 75) + 75, noviy) != "None":
+                    peti = False
+
+                if sesti == True:
+                    if enemy_colision(objekat, novix, noviy - (i * 75) - 75) != "None":
+                        if enemy_colision(objekat, novix, noviy - (i * 75) - 75).obj == "King":
+                            return objekat
+                        else:
+                            sesti = False
+                    if ally_colision(objekat, novix, noviy - (i * 75) - 75) != "None":
+                        sesti = False
+
+                if sedmi == True:
+                    if enemy_colision(objekat, novix, noviy + (i * 75) + 75) != "None":
+                        if enemy_colision(objekat, novix, noviy + (i * 75) + 75).obj == "King":
+                            return objekat
+                        else:
+                            sedmi = False
+                    if ally_colision(objekat, novix, noviy + (i * 75) + 75) != "None":
+                        sedmi = False
+
+                if osmi == True:
+                    if enemy_colision(objekat, novix - (i * 75) - 75, noviy) != "None":
+                        if enemy_colision(objekat, novix - (i * 75) - 75, noviy).obj == "King":
+                            return objekat
+                        else:
+                            osmi = False
+                    if ally_colision(objekat, novix - (i * 75) - 75, noviy) != "None":
+                        osmi = False
+
+        if objekat.obj == "King":
+            if enemy_colision(objekat, objekat.x + 75, objekat.y) != "None":
+                if enemy_colision(objekat, objekat.x + 75, objekat.y).obj == "King":
+                    return objekat
+
+            if enemy_colision(objekat, objekat.x - 75, objekat.y) != "None":
+                if enemy_colision(objekat, objekat.x - 75, objekat.y).obj == "King":
+                    return objekat
+
+            if enemy_colision(objekat, objekat.x, objekat.y + 75) != "None":
+                if enemy_colision(objekat, objekat.x, objekat.y + 75).obj == "King":
+                    return objekat
+
+            if enemy_colision(objekat, objekat.x, objekat.y - 75) != "None":
+                if enemy_colision(objekat, objekat.x, objekat.y - 75).obj == "King":
+                    return objekat
+
+            if enemy_colision(objekat, objekat.x + 75, objekat.y - 75) != "None":
+                if enemy_colision(objekat, objekat.x + 75, objekat.y - 75).obj == "King":
+                    return objekat
+
+            if enemy_colision(objekat, objekat.x - 75, objekat.y - 75) != "None":
+                if enemy_colision(objekat, objekat.x - 75, objekat.y - 75).obj == "King":
+                    return objekat
+
+            if enemy_colision(objekat, objekat.x - 75, objekat.y + 75) != "None":
+                if enemy_colision(objekat, objekat.x - 75, objekat.y + 75).obj == "King":
+                    return objekat
+
+            if enemy_colision(objekat, objekat.x + 75, objekat.y + 75) != "None":
+                if enemy_colision(objekat, objekat.x + 75, objekat.y + 75).obj == "King":
+                    return objekat
+
+    return "None"
+
+def king_checkmated(pieces, potez): # kad pozoves ovo moras potez vratiti... mozda i ne mora fale jos likova da dovrsis
+    for objekat in pieces:
+        if objekat.color == "white":
+            if objekat.obj == "Pawn":
+                objekat.y -= 75
+                moved = objekat.move(potez)
+                if moved == True:
+                    if king_checked(crni) == "None":
+                        objekat.x += 75
+                        objekat.starix += 75
+                        return False
+                    objekat.x += 75
+                    objekat.starix += 75
+
+                objekat.y -= 150
+                moved = objekat.move(potez)
+                if moved == True:
+                    if king_checked(crni) == "None":
+                        objekat.x += 150
+                        objekat.starix += 150
+                        return False
+                    objekat.x += 150
+                    objekat.starix += 150
+
+                objekat.x -= 75
+                objekat.y -= 75
+                moved = objekat.move(potez)
+                if moved == True:
+                    if king_checked(crni) == "None":
+                        objekat.x += 75
+                        objekat.starix += 75
+                        objekat.y += 75
+                        objekat.stariy += 75
+                        return False
+                    objekat.x += 75
+                    objekat.starix += 75
+                    objekat.y += 75
+                    objekat.stariy += 75
+                objekat.x += 75
+                objekat.y -= 75
+                moved = objekat.move(potez)
+                if moved == True:
+                    if king_checked(crni) == "None":
+                        objekat.x -= 75
+                        objekat.starix -= 75
+                        objekat.y += 75
+                        objekat.stariy += 75
+                        return False
+                    objekat.x -= 75
+                    objekat.starix -= 75
+                    objekat.y += 75
+                    objekat.stariy += 75
+        else:
+            if objekat.obj == "Pawn":
+                objekat.y += 75
+                moved = objekat.move(potez)
+                if moved == True:
+                    if king_checked(bijeli) == "None":
+                        objekat.x -= 75
+                        objekat.starix -= 75
+                        return False
+                    objekat.x -= 75
+                    objekat.starix -= 75
+
+                objekat.y += 150
+                moved = objekat.move(potez)
+                if moved == True:
+                    if king_checked(bijeli) == "None":
+                        objekat.x -= 150
+                        objekat.starix -= 150
+                        return False
+                    objekat.x -= 150
+                    objekat.starix -= 150
+
+                objekat.x += 75
+                objekat.y += 75
+                moved = objekat.move(potez)
+                if moved == True:
+                    if king_checked(bijeli) == "None":
+                        objekat.x -= 75
+                        objekat.starix -= 75
+                        objekat.y -= 75
+                        objekat.stariy -= 75
+                        return False
+                    objekat.x -= 75
+                    objekat.starix -= 75
+                    objekat.y -= 75
+                    objekat.stariy -= 75
+                objekat.x -= 75
+                objekat.y += 75
+                moved = objekat.move(potez)
+                if moved == True:
+                    if king_checked(bijeli) == "None":
+                        objekat.x += 75
+                        objekat.starix += 75
+                        objekat.y -= 75
+                        objekat.stariy -= 75
+                        return False
+                    objekat.x += 75
+                    objekat.starix += 75
+                    objekat.y -= 75
+                    objekat.stariy -= 75
+        if objekat.obj == "Knight":
+            objekat.x -= 75
+            objekat.y += 150
+            moved = objekat.move(potez)
+            if moved == True:
+                if objekat.color == "white":
+                    if king_checked(crni) == "None":
+                        objekat.x += 75
+                        objekat.starix += 75
+                        objekat.y -= 150
+                        objekat.stariy -= 150
+                        return False
+                    objekat.x += 75
+                    objekat.starix += 75
+                    objekat.y -= 150
+                    objekat.stariy -= 150
+                else:
+                    if king_checked(bijeli) == "None":
+                        objekat.x += 75
+                        objekat.starix += 75
+                        objekat.y -= 150
+                        objekat.stariy -= 150
+                        return False
+                objekat.x += 75
+                objekat.starix += 75
+                objekat.y -= 150
+                objekat.stariy -= 150
+
+            objekat.x -= 75
+            objekat.y -= 150
+            moved = objekat.move(potez)
+            if moved == True:
+                if objekat.color == "white":
+                    if king_checked(crni) == "None":
+                        objekat.x += 75
+                        objekat.starix += 75
+                        objekat.y += 150
+                        objekat.stariy += 150
+                        return False
+                    objekat.x += 75
+                    objekat.starix += 75
+                    objekat.y += 150
+                    objekat.stariy += 150
+                else:
+                    if king_checked(bijeli) == "None":
+                        objekat.x += 75
+                        objekat.starix += 75
+                        objekat.y += 150
+                        objekat.stariy += 150
+                        return False
+                objekat.x += 75
+                objekat.starix += 75
+                objekat.y += 150
+                objekat.stariy += 150
+
+            objekat.x += 75
+            objekat.y += 150
+            moved = objekat.move(potez)
+            if moved == True:
+                if objekat.color == "white":
+                    if king_checked(crni) == "None":
+                        objekat.x -= 75
+                        objekat.starix -= 75
+                        objekat.y -= 150
+                        objekat.stariy -= 150
+                        return False
+                    objekat.x -= 75
+                    objekat.starix -= 75
+                    objekat.y -= 150
+                    objekat.stariy -= 150
+                else:
+                    if king_checked(bijeli) == "None":
+                        objekat.x -= 75
+                        objekat.starix -= 75
+                        objekat.y -= 150
+                        objekat.stariy -= 150
+                        return False
+                objekat.x -= 75
+                objekat.starix -= 75
+                objekat.y -= 150
+                objekat.stariy -= 150
+
+            objekat.x += 75
+            objekat.y -= 150
+            moved = objekat.move(potez)
+            if moved == True:
+                if objekat.color == "white":
+                    if king_checked(crni) == "None":
+                        objekat.x -= 75
+                        objekat.starix -= 75
+                        objekat.y += 150
+                        objekat.stariy += 150
+                        return False
+                    objekat.x -= 75
+                    objekat.starix -= 75
+                    objekat.y += 150
+                    objekat.stariy += 150
+                else:
+                    if king_checked(bijeli) == "None":
+                        objekat.x -= 75
+                        objekat.starix -= 75
+                        objekat.y += 150
+                        objekat.stariy += 150
+                        return False
+                objekat.x -= 75
+                objekat.starix -= 75
+                objekat.y += 150
+                objekat.stariy += 150
+
+            objekat.x -= 150
+            objekat.y += 75
+            moved = objekat.move(potez)
+            if moved == True:
+                if objekat.color == "white":
+                    if king_checked(crni) == "None":
+                        objekat.x += 150
+                        objekat.starix += 150
+                        objekat.y -= 75
+                        objekat.stariy -= 75
+                        return False
+                    objekat.x += 150
+                    objekat.starix += 150
+                    objekat.y -= 75
+                    objekat.stariy -= 75
+                else:
+                    if king_checked(bijeli) == "None":
+                        objekat.x += 150
+                        objekat.starix += 150
+                        objekat.y -= 75
+                        objekat.stariy -= 75
+                        return False
+                objekat.x += 150
+                objekat.starix += 150
+                objekat.y -= 75
+                objekat.stariy -= 75
+
+            objekat.x -= 150
+            objekat.y -= 75
+            moved = objekat.move(potez)
+            if moved == True:
+                if objekat.color == "white":
+                    if king_checked(crni) == "None":
+                        objekat.x += 150
+                        objekat.starix += 150
+                        objekat.y += 75
+                        objekat.stariy += 75
+                        return False
+                    objekat.x += 150
+                    objekat.starix += 150
+                    objekat.y += 75
+                    objekat.stariy += 75
+                else:
+                    if king_checked(bijeli) == "None":
+                        objekat.x += 150
+                        objekat.starix += 150
+                        objekat.y += 75
+                        objekat.stariy += 75
+                        return False
+                objekat.x += 150
+                objekat.starix += 150
+                objekat.y += 75
+                objekat.stariy += 75
+
+            objekat.x += 150
+            objekat.y += 75
+            moved = objekat.move(potez)
+            if moved == True:
+                if objekat.color == "white":
+                    if king_checked(crni) == "None":
+                        objekat.x -= 150
+                        objekat.starix -= 150
+                        objekat.y -= 75
+                        objekat.stariy -= 75
+                        return False
+                    objekat.x -= 150
+                    objekat.starix -= 150
+                    objekat.y -= 75
+                    objekat.stariy -= 75
+                else:
+                    if king_checked(bijeli) == "None":
+                        objekat.x -= 150
+                        objekat.starix -= 150
+                        objekat.y -= 75
+                        objekat.stariy -= 75
+                        return False
+                objekat.x -= 150
+                objekat.starix -= 150
+                objekat.y -= 75
+                objekat.stariy -= 75
+
+            objekat.x += 150
+            objekat.y -= 75
+            moved = objekat.move(potez)
+            if moved == True:
+                if objekat.color == "white":
+                    if king_checked(crni) == "None":
+                        objekat.x -= 150
+                        objekat.starix -= 150
+                        objekat.y += 75
+                        objekat.stariy += 75
+                        return False
+                    objekat.x -= 150
+                    objekat.starix -= 150
+                    objekat.y += 75
+                    objekat.stariy += 75
+                else:
+                    if king_checked(bijeli) == "None":
+                        objekat.x -= 150
+                        objekat.starix -= 150
+                        objekat.y += 75
+                        objekat.stariy += 75
+                        return False
+                objekat.x -= 150
+                objekat.starix -= 150
+                objekat.y += 75
+                objekat.stariy += 75
+
+        if objekat.obj == "Bishop":
+            pass
+
+        if objekat.obj == "Rook":
+            pass
+
+        if objekat.obj == "Queen":
+            pass
+
+        if objekat.obj == "King":
+            pass
+
 
 class Pawn:
     def __init__(self, x, y, color):
@@ -101,6 +694,8 @@ class Pawn:
         self.y = y
         self.starix = x
         self.stariy = y
+        self.enp = 0
+        self.obj = "Pawn"
         if color == 'white':
             self.color = 'white'
             self.object = White_Pawn
@@ -111,15 +706,35 @@ class Pawn:
     def draw(self, win):
         win.blit(self.object, (self.x, self.y))
 
-    def move(self):
+    def move(self, potez):
         if self.color == "white":
             if ((self.stariy - 77.5) <= self.y + 37.5 <= (self.stariy + 2.5)) and (
                     self.starix - 77.5 <= self.x + 37.5 <= self.starix - 2.5):
+                if((enemy_colision(self, self.starix - 75, self.stariy)) != "None"):   #EnPassant lijevi
+                    if(enemy_colision(self, self.starix - 75, self.stariy)).obj == "Pawn":
+                        if enemy_colision(self, self.starix - 75, self.stariy).enp == (potez-1):
+                            self.x = self.starix - 75
+                            self.y = self.stariy - 75
+                            za_brisanje = enemy_colision(self, self.starix - 75, self.stariy)
+                            crni.pop(crni.index(za_brisanje))
+                            if king_checked(crni) != "None":
+                                self.x = self.starix
+                                self.y = self.stariy
+                                crni.append(za_brisanje)
+                                return False
+                            self.starix = self.starix - 75
+                            self.stariy = self.stariy - 75
+                            return True
                 if(enemy_colision(self, self.starix - 75, self.stariy - 75) != 'None'):
-                    za_brisanje = enemy_colision(self, self.starix - 75, self.stariy - 75)
-                    crni.pop(crni.index(za_brisanje))
                     self.x = self.starix - 75
                     self.y = self.stariy - 75
+                    za_brisanje = enemy_colision(self, self.starix - 75, self.stariy - 75)
+                    crni.pop(crni.index(za_brisanje))
+                    if king_checked(crni) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        crni.append(za_brisanje)
+                        return False
                     self.starix = self.starix - 75
                     self.stariy = self.stariy - 75
                     return True
@@ -128,11 +743,33 @@ class Pawn:
                 return False
             if ((self.stariy - 77.5) <= self.y + 37.5 <= (self.stariy + 2.5)) and (
                     self.starix + 72.5 <= self.x + 37.5 <= self.starix + 147.5):
+
+                if ((enemy_colision(self, self.starix + 75, self.stariy)) != "None"):  # EnPassant desni
+                    if (enemy_colision(self, self.starix + 75, self.stariy)).obj == "Pawn":
+                        if enemy_colision(self, self.starix + 75, self.stariy).enp == (potez - 1):
+                            self.x = self.starix + 75
+                            self.y = self.stariy - 75
+                            za_brisanje = enemy_colision(self, self.starix + 75, self.stariy)
+                            crni.pop(crni.index(za_brisanje))
+                            if king_checked(crni) != "None":
+                                self.x = self.starix
+                                self.y = self.stariy
+                                crni.append(za_brisanje)
+                                return False
+                            self.starix = self.starix + 75
+                            self.stariy = self.stariy - 75
+                            return True
+
                 if(enemy_colision(self, self.starix + 75, self.stariy - 75) != 'None'):
-                    za_brisanje = enemy_colision(self, self.starix + 75, self.stariy - 75)
-                    crni.pop(crni.index(za_brisanje))
                     self.x = self.starix + 75
                     self.y = self.stariy - 75
+                    za_brisanje = enemy_colision(self, self.starix + 75, self.stariy - 75)
+                    crni.pop(crni.index(za_brisanje))
+                    if king_checked(crni) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        crni.append(za_brisanje)
+                        return False
                     self.starix = self.starix + 75
                     self.stariy = self.stariy - 75
                     return True
@@ -153,8 +790,13 @@ class Pawn:
                         return False
                     self.x = self.starix
                     self.y = self.stariy - 150
+                    if king_checked(crni) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        return False
                     self.starix = self.x
                     self.stariy = self.y
+                    self.enp = potez
                     return True
                 elif (self.stariy - 75 <= self.y + 37.5 <= self.stariy) and (
                         self.starix - 2.5 <= self.x + 37.5 <= self.starix + 72.5):
@@ -165,6 +807,10 @@ class Pawn:
                         return False
                     self.x = self.starix
                     self.y = self.stariy - 75
+                    if king_checked(crni) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        return False
                     self.starix = self.x
                     self.stariy = self.y
                     return True
@@ -182,6 +828,10 @@ class Pawn:
                         return False
                     self.x = self.starix
                     self.y = self.stariy - 75
+                    if king_checked(crni) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        return False
                     self.starix = self.x
                     self.stariy = self.y
                     return True
@@ -190,26 +840,69 @@ class Pawn:
                     self.y = self.stariy
                     return False
         else:
-            if ((self.stariy + 2.5) <= self.y + 37.5 <= (self.stariy + 77.5)) and (
+            if ((self.stariy + 77.5) <= self.y + 37.5 <= (self.stariy + 152.5)) and (
                     self.starix + 72.5 <= self.x + 37.5 <= self.starix + 147.5):
+                if ((enemy_colision(self, self.starix + 75, self.stariy)) != "None"):  # EnPassant desni
+                    if (enemy_colision(self, self.starix + 75, self.stariy)).obj == "Pawn":
+                        if enemy_colision(self, self.starix + 75, self.stariy).enp == (potez - 1):
+                            self.x = self.starix + 75
+                            self.y = self.stariy + 75
+                            za_brisanje = enemy_colision(self, self.starix + 75, self.stariy)
+                            bijeli.pop(bijeli.index(za_brisanje))
+                            if king_checked(bijeli) != "None":
+                                self.x = self.starix
+                                self.y = self.stariy
+                                bijeli.append(za_brisanje)
+                                return False
+                            self.starix = self.starix + 75
+                            self.stariy = self.stariy + 75
+                            return True
+
                 if(enemy_colision(self, self.starix + 75, self.stariy + 75) != 'None'):
-                    za_brisanje = enemy_colision(self, self.starix + 75, self.stariy + 75)
-                    bijeli.pop(bijeli.index(za_brisanje))
                     self.x = self.starix + 75
                     self.y = self.stariy + 75
+                    za_brisanje = enemy_colision(self, self.starix + 75, self.stariy + 75)
+                    bijeli.pop(bijeli.index(za_brisanje))
+                    if king_checked(bijeli) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        bijeli.append(za_brisanje)
+                        return False
                     self.starix = self.starix + 75
                     self.stariy = self.stariy + 75
                     return True
                 self.x = self.starix
                 self.y = self.stariy
                 return False
-            if ((self.stariy + 2.5) <= self.y + 37.5 <= (self.stariy + 77.5)) and (
-                    self.starix - 2.5 <= self.x + 37.5 <= self.starix - 77.5):
+            if ((self.stariy + 77.5) <= self.y + 37.5 <= (self.stariy + 152.5)) and (
+                    self.starix - 77.5 <= self.x + 37.5 <= self.starix - 2.5):
+
+                if ((enemy_colision(self, self.starix - 75, self.stariy)) != "None"):  # EnPassant lijevi
+                    if (enemy_colision(self, self.starix - 75, self.stariy)).obj == "Pawn":
+                        if enemy_colision(self, self.starix - 75, self.stariy).enp == (potez - 1):
+                            self.x = self.starix - 75
+                            self.y = self.stariy + 75
+                            za_brisanje = enemy_colision(self, self.starix - 75, self.stariy)
+                            bijeli.pop(bijeli.index(za_brisanje))
+                            if king_checked(bijeli) != "None":
+                                self.x = self.starix
+                                self.y = self.stariy
+                                bijeli.append(za_brisanje)
+                                return False
+                            self.starix = self.starix - 75
+                            self.stariy = self.stariy + 75
+                            return True
+
                 if(enemy_colision(self, self.starix - 75, self.stariy + 75) != 'None'):
-                    za_brisanje = enemy_colision(self, self.starix - 75, self.stariy + 75)
-                    bijeli.pop(bijeli.index(za_brisanje))
                     self.x = self.starix - 75
                     self.y = self.stariy + 75
+                    za_brisanje = enemy_colision(self, self.starix - 75, self.stariy + 75)
+                    bijeli.pop(bijeli.index(za_brisanje))
+                    if king_checked(bijeli) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        bijeli.append(za_brisanje)
+                        return False
                     self.starix = self.starix - 75
                     self.stariy = self.stariy + 75
                     return True
@@ -231,8 +924,13 @@ class Pawn:
                         return False
                     self.x = self.starix
                     self.y = self.stariy + 150
+                    if king_checked(bijeli) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        return False
                     self.starix = self.x
                     self.stariy = self.y
+                    self.enp = potez
                     return True
                 elif (self.stariy + 72.5 <= self.y + 37.5 <= self.stariy + 147.5) and (
                         self.starix - 2.5 <= self.x + 37.5 <= self.starix + 72.5):
@@ -243,6 +941,10 @@ class Pawn:
                         return False
                     self.x = self.starix
                     self.y = self.stariy + 75
+                    if king_checked(bijeli) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        return False
                     self.starix = self.x
                     self.stariy = self.y
                     return True
@@ -260,6 +962,10 @@ class Pawn:
                         return False
                     self.x = self.starix
                     self.y = self.stariy + 75
+                    if king_checked(bijeli) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        return False
                     self.starix = self.x
                     self.stariy = self.y
                     return True
@@ -275,6 +981,7 @@ class Knight:
         self.y = y
         self.starix = x
         self.stariy = y
+        self.obj = "Knight"
         if color == 'white':
             self.color = 'white'
             self.object = White_Knight
@@ -285,21 +992,41 @@ class Knight:
     def draw(self, win):
         win.blit(self.object, (self.x, self.y))
 
-    def move(self):
+    def move(self, potez):
+        kontrola = 0
         if ((self.stariy - 152.5) <= self.y + 37.5 <= (self.stariy - 72.5)):
             if (self.starix +72.5 <= self.x + 37.5 <= self.starix + 147.5):
                 if (ally_colision(self, self.starix + 75, self.stariy - 150) != 'None'):
                     self.x = self.starix
                     self.y = self.stariy
                     return False
+
+                self.x = self.starix + 75
+                self.y = self.stariy - 150
+
                 if (enemy_colision(self, self.starix + 75, self.stariy - 150) != 'None'):
                     za_brisanje = enemy_colision(self, self.starix + 75, self.stariy - 150)
+                    kontrola = 1
                     if self.color == 'white':
                         crni.pop(crni.index(za_brisanje))
                     else:
                         bijeli.pop(bijeli.index(za_brisanje))
-                self.x = self.starix + 75
-                self.y = self.stariy - 150
+
+                if self.color == "white":
+                    if king_checked(crni) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            crni.append(za_brisanje)
+                        return False
+                else:
+                    if king_checked(bijeli) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            bijeli.append(za_brisanje)
+                        return False
+
                 self.starix = self.x
                 self.stariy = self.y
                 return True
@@ -309,14 +1036,31 @@ class Knight:
                     self.x = self.starix
                     self.y = self.stariy
                     return False
+                self.x = self.starix - 75
+                self.y = self.stariy - 150
+
                 if (enemy_colision(self, self.starix - 75, self.stariy - 150) != 'None'):
                     za_brisanje = enemy_colision(self, self.starix - 75, self.stariy - 150)
+                    kontrola = 1
                     if self.color == 'white':
                         crni.pop(crni.index(za_brisanje))
                     else:
                         bijeli.pop(bijeli.index(za_brisanje))
-                self.x = self.starix - 75
-                self.y = self.stariy - 150
+
+                if self.color == "white":
+                    if king_checked(crni) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            crni.append(za_brisanje)
+                        return False
+                else:
+                    if king_checked(bijeli) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            bijeli.append(za_brisanje)
+                        return False
                 self.starix = self.x
                 self.stariy = self.y
                 return True
@@ -330,14 +1074,30 @@ class Knight:
                     self.x = self.starix
                     self.y = self.stariy
                     return False
+                self.x = self.starix + 75
+                self.y = self.stariy + 150
                 if (enemy_colision(self, self.starix + 75, self.stariy + 150) != 'None'):
                     za_brisanje = enemy_colision(self, self.starix + 75, self.stariy + 150)
+                    kontrola = 1
                     if self.color == 'white':
                         crni.pop(crni.index(za_brisanje))
                     else:
                         bijeli.pop(bijeli.index(za_brisanje))
-                self.x = self.starix + 75
-                self.y = self.stariy + 150
+                if self.color == "white":
+                    if king_checked(crni) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            crni.append(za_brisanje)
+                        return False
+                else:
+                    if king_checked(bijeli) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            bijeli.append(za_brisanje)
+                        return False
+
                 self.starix = self.x
                 self.stariy = self.y
                 return True
@@ -346,14 +1106,32 @@ class Knight:
                     self.x = self.starix
                     self.y = self.stariy
                     return False
+                self.x = self.starix - 75
+                self.y = self.stariy + 150
+
                 if (enemy_colision(self, self.starix - 75, self.stariy + 150) != 'None'):
                     za_brisanje = enemy_colision(self, self.starix - 75, self.stariy + 150)
+                    kontrola = 1
                     if self.color == 'white':
                         crni.pop(crni.index(za_brisanje))
                     else:
                         bijeli.pop(bijeli.index(za_brisanje))
-                self.x = self.starix - 75
-                self.y = self.stariy + 150
+
+                if self.color == "white":
+                    if king_checked(crni) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            crni.append(za_brisanje)
+                        return False
+                else:
+                    if king_checked(bijeli) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            bijeli.append(za_brisanje)
+                        return False
+
                 self.starix = self.x
                 self.stariy = self.y
                 return True
@@ -367,14 +1145,29 @@ class Knight:
                     self.x = self.starix
                     self.y = self.stariy
                     return False
+                self.x = self.starix + 150
+                self.y = self.stariy - 75
                 if (enemy_colision(self, self.starix + 150, self.stariy - 75) != 'None'):
                     za_brisanje = enemy_colision(self, self.starix + 150, self.stariy - 75)
+                    kontrola = 1
                     if self.color == 'white':
                         crni.pop(crni.index(za_brisanje))
                     else:
                         bijeli.pop(bijeli.index(za_brisanje))
-                self.x = self.starix + 150
-                self.y = self.stariy - 75
+                if self.color == "white":
+                    if king_checked(crni) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            crni.append(za_brisanje)
+                        return False
+                else:
+                    if king_checked(bijeli) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            bijeli.append(za_brisanje)
+                        return False
                 self.starix = self.x
                 self.stariy = self.y
                 return True
@@ -383,14 +1176,31 @@ class Knight:
                     self.x = self.starix
                     self.y = self.stariy
                     return False
+
+                self.x = self.starix + 150
+                self.y = self.stariy + 75
                 if (enemy_colision(self, self.starix + 150, self.stariy + 75) != 'None'):
                     za_brisanje = enemy_colision(self, self.starix + 150, self.stariy + 75)
+                    kontrola = 1
                     if self.color == 'white':
                         crni.pop(crni.index(za_brisanje))
                     else:
                         bijeli.pop(bijeli.index(za_brisanje))
-                self.x = self.starix + 150
-                self.y = self.stariy + 75
+                if self.color == "white":
+                    if king_checked(crni) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            crni.append(za_brisanje)
+                        return False
+                else:
+                    if king_checked(bijeli) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            bijeli.append(za_brisanje)
+                        return False
+
                 self.starix = self.x
                 self.stariy = self.y
                 return True
@@ -407,14 +1217,31 @@ class Knight:
                     self.x = self.starix
                     self.y = self.stariy
                     return False
+
+                self.x = self.starix - 150
+                self.y = self.stariy - 75
                 if (enemy_colision(self, self.starix - 150, self.stariy - 75) != 'None'):
                     za_brisanje = enemy_colision(self, self.starix - 150, self.stariy - 75)
+                    kontrola = 1
                     if self.color == 'white':
                         crni.pop(crni.index(za_brisanje))
                     else:
                         bijeli.pop(bijeli.index(za_brisanje))
-                self.x = self.starix - 150
-                self.y = self.stariy - 75
+                if self.color == "white":
+                    if king_checked(crni) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            crni.append(za_brisanje)
+                        return False
+                else:
+                    if king_checked(bijeli) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            bijeli.append(za_brisanje)
+                        return False
+
                 self.starix = self.x
                 self.stariy = self.y
                 return True
@@ -423,14 +1250,31 @@ class Knight:
                     self.x = self.starix
                     self.y = self.stariy
                     return False
+
+                self.x = self.starix - 150
+                self.y = self.stariy + 75
                 if (enemy_colision(self, self.starix - 150, self.stariy + 75) != 'None'):
                     za_brisanje = enemy_colision(self, self.starix - 150, self.stariy + 75)
+                    kontrola = 1
                     if self.color == 'white':
                         crni.pop(crni.index(za_brisanje))
                     else:
                         bijeli.pop(bijeli.index(za_brisanje))
-                self.x = self.starix - 150
-                self.y = self.stariy + 75
+                if self.color == "white":
+                    if king_checked(crni) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            crni.append(za_brisanje)
+                        return False
+                else:
+                    if king_checked(bijeli) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        if kontrola == 1:
+                            bijeli.append(za_brisanje)
+                        return False
+
                 self.starix = self.x
                 self.stariy = self.y
                 return True
@@ -443,14 +1287,13 @@ class Knight:
             self.y = self.stariy
             return False
 
-
-
 class Bishop:
     def __init__(self, x, y, color):
         self.x = x
         self.y = y
         self.starix = x
         self.stariy = y
+        self.obj = "Bishop"
         if color == 'white':
             self.color = 'white'
             self.object = White_Bishop
@@ -460,8 +1303,8 @@ class Bishop:
 
     def draw(self, win):
         win.blit(self.object, (self.x, self.y))
-    def move(self):
-
+    def move(self, potez):
+        kontrola = 0
         novix = self.starix
         noviy = self.stariy
         for i in range(7):
@@ -469,9 +1312,10 @@ class Bishop:
                 break
             if(noviy - 77.5 <= self.y + 37.5 <= noviy - 2.5):
                 if(novix - 77.5 <= self.x + 37.5 <= novix - 2.5):
-                    if (ally_colision(self, novix + 75, noviy + 75) != 'None'):
+                    if (ally_colision(self, novix - 75, noviy - 75) != 'None'):
                         break
                     if (enemy_colision(self, novix - 75, noviy - 75) != 'None'):
+                        kontrola = 1
                         za_brisanje = enemy_colision(self, novix - 75, noviy - 75)
                         if(self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
@@ -479,11 +1323,28 @@ class Bishop:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix - 75
                     self.y = noviy - 75
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix - 75
                     self.stariy = noviy - 75
                     return True
+            if (enemy_colision(self, novix - 75, noviy - 75) != 'None'):
+                break
             novix -= 75
             noviy -= 75
+        kontrola = 0
         novix = self.starix
         noviy = self.stariy
         for i in range(7):
@@ -491,21 +1352,39 @@ class Bishop:
                 break
             if (noviy - 77.5 <= self.y + 37.5 <= noviy - 2.5):
                 if(novix + 72.5 <= self.x + 37.5 <= novix + 147.5):
-                    if (ally_colision(self, novix + 75, noviy + 75) != 'None'):
+                    if (ally_colision(self, novix + 75, noviy - 75) != 'None'):
                         break
                     if (enemy_colision(self, novix + 75, noviy - 75) != 'None'):
                         za_brisanje = enemy_colision(self, novix + 75, noviy - 75)
+                        kontrola = 1
                         if(self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
                         else:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix + 75
                     self.y = noviy - 75
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix + 75
                     self.stariy = noviy - 75
                     return True
+            if (enemy_colision(self, novix + 75, noviy - 75) != 'None'):
+                break
             novix += 75
             noviy -= 75
+        kontrola = 0
         novix = self.starix
         noviy = self.stariy
         for i in range(7):
@@ -513,21 +1392,39 @@ class Bishop:
                 break
             if (noviy + 72.5 <= self.y + 37.5 <= noviy + 147.5):
                 if (novix - 77.5 <= self.x + 37.5 <= novix - 2.5):
-                    if (ally_colision(self, novix + 75, noviy + 75) != 'None'):
+                    if (ally_colision(self, novix - 75, noviy + 75) != 'None'):
                         break
                     if (enemy_colision(self, novix - 75, noviy + 75) != 'None'):
                         za_brisanje = enemy_colision(self, novix - 75, noviy + 75)
+                        kontrola = 1
                         if(self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
                         else:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix - 75
                     self.y = noviy + 75
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix - 75
                     self.stariy = noviy + 75
                     return True
+            if (enemy_colision(self, novix - 75, noviy + 75) != 'None'):
+                break
             novix -= 75
             noviy += 75
+        kontrola = 0
         novix = self.starix
         noviy = self.stariy
         for i in range(7):
@@ -539,23 +1436,37 @@ class Bishop:
                         break
                     if (enemy_colision(self, novix + 75, noviy + 75) != 'None'):
                         za_brisanje = enemy_colision(self, novix + 75, noviy + 75)
+                        kontrola = 1
                         if(self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
                         else:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix + 75
                     self.y = noviy + 75
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix + 75
                     self.stariy = noviy + 75
                     return True
+            if (enemy_colision(self, novix + 75, noviy + 75) != 'None'):
+                break
             novix += 75
             noviy += 75
         self.x = self.starix
         self.y = self.stariy
         return False
-
-
-
 
 class Rook:
     def __init__(self, x, y, color):
@@ -563,6 +1474,8 @@ class Rook:
         self.y = y
         self.starix = x
         self.stariy = y
+        self.castle = 0
+        self.obj = "Rook"
         if color == 'white':
             self.color = 'white'
             self.object = White_Rook
@@ -573,7 +1486,8 @@ class Rook:
     def draw(self, win):
         win.blit(self.object, (self.x, self.y))
 
-    def move(self):
+    def move(self, potez):
+        kontrola = 0
         noviy = self.stariy
         novix = self.starix
         for i in range(7):
@@ -585,16 +1499,35 @@ class Rook:
                         break
                     if (enemy_colision(self, novix, noviy - 75) != 'None'):
                         za_brisanje = enemy_colision(self, novix, noviy - 75)
+                        kontrola = 1
                         if (self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
                         else:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix
                     self.y = noviy - 75
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix
                     self.stariy = noviy - 75
+                    self.castle = potez
                     return True
+            if (enemy_colision(self, novix, noviy - 75) != 'None'):
+                break
             noviy -= 75
+        kontrola = 0
         noviy = self.stariy
 
         for i in range(7):
@@ -606,16 +1539,35 @@ class Rook:
                         break
                     if (enemy_colision(self, novix, noviy + 75) != 'None'):
                         za_brisanje = enemy_colision(self, novix, noviy + 75)
+                        kontrola = 1
                         if (self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
                         else:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix
                     self.y = noviy + 75
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix
                     self.stariy = noviy + 75
+                    self.castle = potez
                     return True
+            if (enemy_colision(self, novix, noviy + 75) != 'None'):
+                break
             noviy += 75
+        kontrola = 0
         noviy = self.stariy
 
         for i in range(7):
@@ -627,16 +1579,35 @@ class Rook:
                         break
                     if (enemy_colision(self, novix - 75, noviy) != 'None'):
                         za_brisanje = enemy_colision(self, novix - 75, noviy)
+                        kontrola = 1
                         if (self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
                         else:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix - 75
                     self.y = noviy
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix - 75
                     self.stariy = noviy
+                    self.castle = potez
                     return True
+            if (enemy_colision(self, novix  - 75, noviy) != 'None'):
+                break
             novix -= 75
+        kontrola = 0
         novix = self.starix
 
         for i in range(7):
@@ -648,21 +1619,38 @@ class Rook:
                         break
                     if (enemy_colision(self, novix + 75, noviy) != 'None'):
                         za_brisanje = enemy_colision(self, novix + 75, noviy)
+                        kontrola = 1
                         if (self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
                         else:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix + 75
                     self.y = noviy
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix + 75
                     self.stariy = noviy
+                    self.castle = potez
                     return True
+            if (enemy_colision(self, novix  + 75, noviy) != 'None'):
+                break
             novix += 75
 
         self.x = self.starix
         self.y = self.stariy
         return False
-
 
 class Queen:
     def __init__(self, x, y, color):
@@ -670,6 +1658,7 @@ class Queen:
         self.y = y
         self.starix = x
         self.stariy = y
+        self.obj = "Queen"
         if color == 'white':
             self.color = 'white'
             self.object = White_Queen
@@ -680,7 +1669,8 @@ class Queen:
     def draw(self, win):
         win.blit(self.object, (self.x, self.y))
 
-    def move(self):
+    def move(self, potez):
+        kontrola = 0
         noviy = self.stariy
         novix = self.starix
         for i in range(7):
@@ -692,16 +1682,34 @@ class Queen:
                         break
                     if (enemy_colision(self, novix, noviy - 75) != 'None'):
                         za_brisanje = enemy_colision(self, novix, noviy - 75)
+                        kontrola = 1
                         if (self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
                         else:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix
                     self.y = noviy - 75
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix
                     self.stariy = noviy - 75
                     return True
+            if (enemy_colision(self, novix, noviy - 75) != 'None'):
+                break
             noviy -= 75
+        kontrola = 0
         noviy = self.stariy
 
         for i in range(7):
@@ -713,16 +1721,34 @@ class Queen:
                         break
                     if (enemy_colision(self, novix, noviy + 75) != 'None'):
                         za_brisanje = enemy_colision(self, novix, noviy + 75)
+                        kontrola = 1
                         if (self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
                         else:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix
                     self.y = noviy + 75
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix
                     self.stariy = noviy + 75
                     return True
+            if (enemy_colision(self, novix, noviy + 75) != 'None'):
+                break
             noviy += 75
+        kontrola = 0
         noviy = self.stariy
 
         for i in range(7):
@@ -734,16 +1760,34 @@ class Queen:
                         break
                     if (enemy_colision(self, novix - 75, noviy) != 'None'):
                         za_brisanje = enemy_colision(self, novix - 75, noviy)
+                        kontrola = 1
                         if (self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
                         else:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix - 75
                     self.y = noviy
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix - 75
                     self.stariy = noviy
                     return True
+            if (enemy_colision(self, novix - 75, noviy) != 'None'):
+                break
             novix -= 75
+        kontrola = 0
         novix = self.starix
 
         for i in range(7):
@@ -755,16 +1799,34 @@ class Queen:
                         break
                     if (enemy_colision(self, novix + 75, noviy) != 'None'):
                         za_brisanje = enemy_colision(self, novix + 75, noviy)
+                        kontrola = 1
                         if (self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
                         else:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix + 75
                     self.y = noviy
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix + 75
                     self.stariy = noviy
                     return True
+            if (enemy_colision(self, novix + 75, noviy) != 'None'):
+                break
             novix += 75
+        kontrola = 0
         novix = self.starix
         noviy = self.stariy
         for i in range(7):
@@ -772,21 +1834,39 @@ class Queen:
                 break
             if (noviy - 77.5 <= self.y + 37.5 <= noviy - 2.5):
                 if (novix - 77.5 <= self.x + 37.5 <= novix - 2.5):
-                    if (ally_colision(self, novix + 75, noviy + 75) != 'None'):
+                    if (ally_colision(self, novix - 75, noviy - 75) != 'None'):
                         break
                     if (enemy_colision(self, novix - 75, noviy - 75) != 'None'):
                         za_brisanje = enemy_colision(self, novix - 75, noviy - 75)
+                        kontrola = 1
                         if (self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
                         else:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix - 75
                     self.y = noviy - 75
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix - 75
                     self.stariy = noviy - 75
                     return True
+            if (enemy_colision(self, novix - 75, noviy - 75) != 'None'):
+                break
             novix -= 75
             noviy -= 75
+        kontrola = 0
         novix = self.starix
         noviy = self.stariy
         for i in range(7):
@@ -794,21 +1874,39 @@ class Queen:
                 break
             if (noviy - 77.5 <= self.y + 37.5 <= noviy - 2.5):
                 if (novix + 72.5 <= self.x + 37.5 <= novix + 147.5):
-                    if (ally_colision(self, novix + 75, noviy + 75) != 'None'):
+                    if (ally_colision(self, novix + 75, noviy - 75) != 'None'):
                         break
                     if (enemy_colision(self, novix + 75, noviy - 75) != 'None'):
                         za_brisanje = enemy_colision(self, novix + 75, noviy - 75)
+                        kontrola = 1
                         if (self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
                         else:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix + 75
                     self.y = noviy - 75
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix + 75
                     self.stariy = noviy - 75
                     return True
+            if (enemy_colision(self, novix + 75, noviy - 75) != 'None'):
+                break
             novix += 75
             noviy -= 75
+        kontrola = 0
         novix = self.starix
         noviy = self.stariy
         for i in range(7):
@@ -816,21 +1914,39 @@ class Queen:
                 break
             if (noviy + 72.5 <= self.y + 37.5 <= noviy + 147.5):
                 if (novix - 77.5 <= self.x + 37.5 <= novix - 2.5):
-                    if (ally_colision(self, novix + 75, noviy + 75) != 'None'):
+                    if (ally_colision(self, novix - 75, noviy + 75) != 'None'):
                         break
                     if (enemy_colision(self, novix - 75, noviy + 75) != 'None'):
                         za_brisanje = enemy_colision(self, novix - 75, noviy + 75)
+                        kontrola = 1
                         if (self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
                         else:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix - 75
                     self.y = noviy + 75
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix - 75
                     self.stariy = noviy + 75
                     return True
+            if (enemy_colision(self, novix - 75, noviy + 75) != 'None'):
+                break
             novix -= 75
             noviy += 75
+        kontrola = 0
         novix = self.starix
         noviy = self.stariy
         for i in range(7):
@@ -842,21 +1958,37 @@ class Queen:
                         break
                     if (enemy_colision(self, novix + 75, noviy + 75) != 'None'):
                         za_brisanje = enemy_colision(self, novix + 75, noviy + 75)
+                        kontrola = 1
                         if (self.color == 'white'):
                             crni.pop(crni.index(za_brisanje))
                         else:
                             bijeli.pop(bijeli.index(za_brisanje))
                     self.x = novix + 75
                     self.y = noviy + 75
+                    if self.color == "white":
+                        if king_checked(crni) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                crni.append(za_brisanje)
+                            return False
+                    else:
+                        if king_checked(bijeli) != "None":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            if kontrola == 1:
+                                bijeli.append(za_brisanje)
+                            return False
                     self.starix = novix + 75
                     self.stariy = noviy + 75
                     return True
+            if (enemy_colision(self, novix + 75, noviy + 75) != 'None'):
+                break
             novix += 75
             noviy += 75
         self.x = self.starix
         self.y = self.stariy
         return False
-
 
 class King:
     def __init__(self, x, y, color):
@@ -864,6 +1996,8 @@ class King:
         self.y = y
         self.starix = x
         self.stariy = y
+        self.castle = 0
+        self.obj = "King"
         if color == 'white':
             self.color = 'white'
             self.object = White_King
@@ -874,7 +2008,126 @@ class King:
     def draw(self, win):
         win.blit(self.object, (self.x, self.y))
 
-    def move(self):
+    def move(self, potez):
+        kontrola = 0
+        if self.castle == 0:
+            if (self.starix + 147.5 <= self.x + 37.5 <= self.starix + 222.5) and (     #desni castle
+                    self.stariy - 2.5 <= self.y + 37.5 <= self.stariy + 72.5):
+                self.x = self.starix
+                self.y = self.stariy
+                if self.color == "white":
+                    if king_checked(crni) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        return False
+                else:
+                    if king_checked(bijeli) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        return False
+                noviy = self.stariy
+                novix = self.starix + 75
+                for i in range(4):
+                    if enemy_colision(self, novix, noviy) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        return False
+                    if ally_colision(self, novix, noviy)!= "None":
+                        if ally_colision(self, novix, noviy).obj != "Rook":
+                            self.x = self.starix
+                            self.y = self.stariy
+                            return False
+                        if ally_colision(self, novix, noviy).castle != 0:
+                            self.x = self.starix
+                            self.y = self.stariy
+                            return False
+                        else:
+
+                            self.x = self.starix + 75
+                            self.y = self.stariy
+                            if self.color == "white":
+                                if king_checked(crni) != "None":
+                                    self.x = self.starix
+                                    self.y = self.stariy
+                                    return False
+                            else:
+                                if king_checked(bijeli) != "None":
+                                    self.x = self.starix
+                                    self.y = self.stariy
+                                    return False
+                            self.x = self.starix + 150
+                            if self.color == "white":
+                                if king_checked(crni) != "None":
+                                    self.x = self.starix
+                                    self.y = self.stariy
+                                    return False
+                            else:
+                                if king_checked(bijeli) != "None":
+                                    self.x = self.starix
+                                    self.y = self.stariy
+                                    return False
+                            self.starix += 150
+                            self.castle = potez
+                            ally_colision(self, novix, noviy).starix -= 150
+                            ally_colision(self, novix, noviy).x -= 150
+                            return True
+                    novix += 75
+
+            if (self.starix - 152.5 <= self.x + 37.5 <= self.starix - 77.5) and (         #lijevi castle
+                    self.stariy - 2.5 <= self.y + 37.5 <= self.stariy + 72.5):
+                self.x = self.starix
+                self.y = self.stariy
+                if self.color == "white":
+                    if king_checked(crni) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        return False
+                else:
+                    if king_checked(bijeli) != "None":
+                        self.x = self.starix
+                        self.y = self.stariy
+                        return False
+                noviy = self.stariy
+                novix = self.starix - 75
+                for i in range(4):
+                    if enemy_colision(self, novix, noviy) != "None":
+                        return False
+                    if ally_colision(self, novix, noviy)!= "None":
+                        if ally_colision(self, novix, noviy).obj != "Rook":
+                            return False
+                        if ally_colision(self, novix, noviy).castle != 0:
+                            return False
+                        else:
+                            self.x = self.starix - 75
+                            if self.color == "white":
+                                if king_checked(crni) != "None":
+                                    self.x = self.starix
+                                    self.y = self.stariy
+                                    return False
+                            else:
+                                if king_checked(bijeli) != "None":
+                                    self.x = self.starix
+                                    self.y = self.stariy
+                                    return False
+                            self.x = self.starix - 150
+                            if self.color == "white":
+                                if king_checked(crni) != "None":
+                                    self.x = self.starix
+                                    self.y = self.stariy
+                                    return False
+                            else:
+                                if king_checked(bijeli) != "None":
+                                    self.x = self.starix
+                                    self.y = self.stariy
+                                    return False
+                            ally_colision(self, novix, noviy).starix += 225
+                            ally_colision(self, novix, noviy).x += 225
+                            self.y = self.stariy
+                            self.starix -= 150
+                            self.castle = potez
+                            return True
+                    novix -= 75
+
         if (self.stariy - 77.5 <= self.y + 37.5 <= self.stariy + 2.5) and (
                 self.starix - 2.5 <= self.x + 37.5 <= self.starix + 72.5):
             if (ally_colision(self, self.starix, self.stariy - 75) != 'None'):
@@ -883,14 +2136,30 @@ class King:
                 return False
             if (enemy_colision(self, self.starix, self.stariy - 75) != 'None'):
                 za_brisanje = enemy_colision(self, self.starix, self.stariy - 75)
+                kontrola = 1
                 if (self.color == 'white'):
                     crni.pop(crni.index(za_brisanje))
                 else:
                     bijeli.pop(bijeli.index(za_brisanje))
             self.x = self.starix
             self.y = self.stariy - 75
+            if self.color == "white":
+                if king_checked(crni) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        crni.append(za_brisanje)
+                    return False
+            else:
+                if king_checked(bijeli) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        bijeli.append(za_brisanje)
+                    return False
             self.starix = self.x
             self.stariy = self.y
+            self.castle = potez
             return True
         elif (self.stariy + 72.5 <= self.y + 37.5 <= self.stariy + 147.5) and (
                         self.starix - 2.5 <= self.x + 37.5 <= self.starix + 72.5):
@@ -900,14 +2169,30 @@ class King:
                 return False
             if (enemy_colision(self, self.starix, self.stariy + 75) != 'None'):
                 za_brisanje = enemy_colision(self, self.starix, self.stariy + 75)
+                kontrola = 1
                 if (self.color == 'white'):
                     crni.pop(crni.index(za_brisanje))
                 else:
                     bijeli.pop(bijeli.index(za_brisanje))
             self.x = self.starix
             self.y = self.stariy + 75
+            if self.color == "white":
+                if king_checked(crni) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        crni.append(za_brisanje)
+                    return False
+            else:
+                if king_checked(bijeli) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        bijeli.append(za_brisanje)
+                    return False
             self.starix = self.x
             self.stariy = self.y
+            self.castle = potez
             return True
         elif (self.starix - 77.5 <= self.x + 37.5 <= self.starix - 2.5) and (
                         self.stariy - 2.5 <= self.y + 37.5 <= self.stariy + 72.5):
@@ -917,14 +2202,30 @@ class King:
                 return False
             if (enemy_colision(self, self.starix - 75, self.stariy) != 'None'):
                 za_brisanje = enemy_colision(self, self.starix - 75, self.stariy)
+                kontrola = 1
                 if (self.color == 'white'):
                     crni.pop(crni.index(za_brisanje))
                 else:
                     bijeli.pop(bijeli.index(za_brisanje))
             self.x = self.starix - 75
             self.y = self.stariy
+            if self.color == "white":
+                if king_checked(crni) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        crni.append(za_brisanje)
+                    return False
+            else:
+                if king_checked(bijeli) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        bijeli.append(za_brisanje)
+                    return False
             self.starix = self.x
             self.stariy = self.y
+            self.castle = potez
             return True
         elif (self.starix + 72.5 <= self.x + 37.5 <= self.starix + 147.5) and (
                         self.stariy - 2.5 <= self.y + 37.5 <= self.stariy + 72.5):
@@ -934,14 +2235,30 @@ class King:
                 return False
             if (enemy_colision(self, self.starix + 75, self.stariy) != 'None'):
                 za_brisanje = enemy_colision(self, self.starix + 75, self.stariy)
+                kontrola = 1
                 if (self.color == 'white'):
                     crni.pop(crni.index(za_brisanje))
                 else:
                     bijeli.pop(bijeli.index(za_brisanje))
             self.x = self.starix + 75
             self.y = self.stariy
+            if self.color == "white":
+                if king_checked(crni) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        crni.append(za_brisanje)
+                    return False
+            else:
+                if king_checked(bijeli) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        bijeli.append(za_brisanje)
+                    return False
             self.starix = self.x
             self.stariy = self.y
+            self.castle = potez
             return True
         elif (self.stariy - 77.5 <= self.y + 37.5 <= self.stariy + 2.5) and (self.starix - 77.5 <= self.x + 37.5 <= self.starix - 2.5):
             if (ally_colision(self, self.starix - 75, self.stariy - 75) != 'None'):
@@ -950,14 +2267,30 @@ class King:
                 return False
             if (enemy_colision(self, self.starix - 75, self.stariy - 75) != 'None'):
                 za_brisanje = enemy_colision(self, self.starix - 75, self.stariy - 75)
+                kontrola = 1
                 if (self.color == 'white'):
                     crni.pop(crni.index(za_brisanje))
                 else:
                     bijeli.pop(bijeli.index(za_brisanje))
             self.x = self.starix - 75
             self.y = self.stariy - 75
+            if self.color == "white":
+                if king_checked(crni) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        crni.append(za_brisanje)
+                    return False
+            else:
+                if king_checked(bijeli) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        bijeli.append(za_brisanje)
+                    return False
             self.starix = self.x
             self.stariy = self.y
+            self.castle = potez
             return True
         elif (self.stariy - 77.5 <= self.y + 37.5 <= self.stariy + 2.5) and (self.starix + 72.5 <= self.x + 37.5 <= self.starix + 147.5):
             if (ally_colision(self, self.starix + 75, self.stariy - 75) != 'None'):
@@ -966,14 +2299,30 @@ class King:
                 return False
             if (enemy_colision(self, self.starix + 75, self.stariy - 75) != 'None'):
                 za_brisanje = enemy_colision(self, self.starix + 75, self.stariy - 75)
+                kontrola = 1
                 if (self.color == 'white'):
                     crni.pop(crni.index(za_brisanje))
                 else:
                     bijeli.pop(bijeli.index(za_brisanje))
             self.x = self.starix + 75
             self.y = self.stariy - 75
+            if self.color == "white":
+                if king_checked(crni) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        crni.append(za_brisanje)
+                    return False
+            else:
+                if king_checked(bijeli) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        bijeli.append(za_brisanje)
+                    return False
             self.starix = self.x
             self.stariy = self.y
+            self.castle = potez
             return True
         elif (self.stariy + 72.5 <= self.y + 37.5 <= self.stariy + 147.5) and (self.starix - 77.5 <= self.x + 37.5 <= self.starix - 2.5):
             if (ally_colision(self, self.starix - 75, self.stariy + 75) != 'None'):
@@ -982,14 +2331,30 @@ class King:
                 return False
             if (enemy_colision(self, self.starix - 75, self.stariy + 75) != 'None'):
                 za_brisanje = enemy_colision(self, self.starix - 75, self.stariy + 75)
+                kontrola = 1
                 if (self.color == 'white'):
                     crni.pop(crni.index(za_brisanje))
                 else:
                     bijeli.pop(bijeli.index(za_brisanje))
             self.x = self.starix - 75
             self.y = self.stariy + 75
+            if self.color == "white":
+                if king_checked(crni) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        crni.append(za_brisanje)
+                    return False
+            else:
+                if king_checked(bijeli) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        bijeli.append(za_brisanje)
+                    return False
             self.starix = self.x
             self.stariy = self.y
+            self.castle = potez
             return True
         elif (self.stariy + 72.5 <= self.y + 37.5 <= self.stariy + 147.5) and (self.starix + 72.5 <= self.x + 37.5 <= self.starix + 147.5):
             if (ally_colision(self, self.starix + 75, self.stariy + 75) != 'None'):
@@ -998,69 +2363,35 @@ class King:
                 return False
             if (enemy_colision(self, self.starix + 75, self.stariy + 75) != 'None'):
                 za_brisanje = enemy_colision(self, self.starix + 75, self.stariy + 75)
+                kontrola = 1
                 if (self.color == 'white'):
                     crni.pop(crni.index(za_brisanje))
                 else:
                     bijeli.pop(bijeli.index(za_brisanje))
             self.x = self.starix + 75
             self.y = self.stariy + 75
+            if self.color == "white":
+                if king_checked(crni) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        crni.append(za_brisanje)
+                    return False
+            else:
+                if king_checked(bijeli) != "None":
+                    self.x = self.starix
+                    self.y = self.stariy
+                    if kontrola == 1:
+                        bijeli.append(za_brisanje)
+                    return False
             self.starix = self.x
             self.stariy = self.y
+            self.castle = potez
             return True
         else:
             self.x = self.starix
             self.y = self.stariy
             return False
-
-    def Check(self):
-        if self.color == "white":
-            for objekat in crni:
-                if type(objekat) == Pawn:
-                    if type(enemy_colision(objekat, objekat.starix + 75, objekat.stariy + 75)) == King:
-                        return True
-                    if type(enemy_colision(objekat, objekat.starix - 75, objekat.stariy + 75)) == King:
-                        return True
-                if type(objekat) == Bishop:
-                    novix = self.starix
-                    noviy = self.stariy
-                    for i in range(7):
-                        if type(ally_colision(objekat, novix + 75, noviy + 75)) != 'None':
-                            break
-                        if type(enemy_colision(objekat, novix + 75, noviy + 75)) == King:
-                            return True
-                        novix += 75
-                        noviy += 75
-                    novix = self.starix
-                    noviy = self.stariy
-                    for i in range(7):
-                        if type(ally_colision(objekat, novix - 75, noviy + 75)) != 'None':
-                            break
-                        if type(enemy_colision(objekat, novix - 75, noviy + 75)) == King:
-                            return True
-                        novix -= 75
-                        noviy += 75
-                    novix = self.starix
-                    noviy = self.stariy
-                    for i in range(7):
-                        if type(ally_colision(objekat, novix + 75, noviy - 75)) != 'None':
-                            break
-                        if type(enemy_colision(objekat, novix + 75, noviy - 75)) == King:
-                            return True
-                        novix += 75
-                        noviy -= 75
-                    novix = self.starix
-                    noviy = self.stariy
-                    for i in range(7):
-                        if type(ally_colision(objekat, novix - 75, noviy - 75)) != 'None':
-                            break
-                        if type(enemy_colision(objekat, novix - 75, noviy - 75)) == King:
-                            return True
-                        novix -= 75
-                        noviy -= 75
-            return False
-
-        else:
-            pass
 
 
 
@@ -1159,21 +2490,13 @@ def main():
                     objekat.y += mouseMove[1]
             if event.type == pygame.MOUSEBUTTONUP:
                 pressed = False
+                moved = False
+
                 if objekat != "None":
                     if(potez%2 == 1):
-                        if bijeli[0].Check() == False:
-                            print(bijeli[0].Check())
-                            moved = objekat.move()
-                        else:
-                            objekat.x = objekat.starix
-                            objekat.y = objekat.stariy
+                        moved = objekat.move(potez)
                     else:
-                        if crni[0].Check() == False:
-                            print(bijeli[0].Check())
-                            moved = objekat.move()
-                        else:
-                            objekat.x = objekat.starix
-                            objekat.y = objekat.stariy
+                        moved = objekat.move(potez)
                     if moved:
                         potez += 1
                 objekat = "None"
