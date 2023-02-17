@@ -358,325 +358,368 @@ def king_checked(pieces):
 
 def king_checkmated(pieces, potez): # kad pozoves ovo moras potez vratiti... mozda i ne mora fale jos likova da dovrsis
     for objekat in pieces:
-        if objekat.color == "white":
-            if objekat.obj == "Pawn":
-                objekat.y -= 75
-                moved = objekat.move(potez)
-                if moved == True:
-                    if king_checked(crni) == "None":
-                        objekat.x += 75
-                        objekat.starix += 75
-                        return False
-                    objekat.x += 75
-                    objekat.starix += 75
-
-                objekat.y -= 150
-                moved = objekat.move(potez)
-                if moved == True:
-                    if king_checked(crni) == "None":
-                        objekat.x += 150
-                        objekat.starix += 150
-                        return False
-                    objekat.x += 150
-                    objekat.starix += 150
-
-                objekat.x -= 75
-                objekat.y -= 75
-                moved = objekat.move(potez)
-                if moved == True:
-                    if king_checked(crni) == "None":
-                        objekat.x += 75
-                        objekat.starix += 75
-                        objekat.y += 75
-                        objekat.stariy += 75
-                        return False
-                    objekat.x += 75
-                    objekat.starix += 75
-                    objekat.y += 75
-                    objekat.stariy += 75
-                objekat.x += 75
-                objekat.y -= 75
-                moved = objekat.move(potez)
-                if moved == True:
-                    if king_checked(crni) == "None":
-                        objekat.x -= 75
-                        objekat.starix -= 75
-                        objekat.y += 75
-                        objekat.stariy += 75
-                        return False
-                    objekat.x -= 75
-                    objekat.starix -= 75
-                    objekat.y += 75
-                    objekat.stariy += 75
-        else:
-            if objekat.obj == "Pawn":
-                objekat.y += 75
-                moved = objekat.move(potez)
-                if moved == True:
-                    if king_checked(bijeli) == "None":
-                        objekat.x -= 75
-                        objekat.starix -= 75
-                        return False
-                    objekat.x -= 75
-                    objekat.starix -= 75
-
-                objekat.y += 150
-                moved = objekat.move(potez)
-                if moved == True:
-                    if king_checked(bijeli) == "None":
-                        objekat.x -= 150
-                        objekat.starix -= 150
-                        return False
-                    objekat.x -= 150
-                    objekat.starix -= 150
-
-                objekat.x += 75
-                objekat.y += 75
-                moved = objekat.move(potez)
-                if moved == True:
-                    if king_checked(bijeli) == "None":
-                        objekat.x -= 75
-                        objekat.starix -= 75
-                        objekat.y -= 75
-                        objekat.stariy -= 75
-                        return False
-                    objekat.x -= 75
-                    objekat.starix -= 75
-                    objekat.y -= 75
-                    objekat.stariy -= 75
-                objekat.x -= 75
-                objekat.y += 75
-                moved = objekat.move(potez)
-                if moved == True:
-                    if king_checked(bijeli) == "None":
-                        objekat.x += 75
-                        objekat.starix += 75
-                        objekat.y -= 75
-                        objekat.stariy -= 75
-                        return False
-                    objekat.x += 75
-                    objekat.starix += 75
-                    objekat.y -= 75
-                    objekat.stariy -= 75
+        za_brisanje = "None"
         if objekat.obj == "Knight":
             objekat.x -= 75
             objekat.y += 150
-            moved = objekat.move(potez)
-            if moved == True:
-                if objekat.color == "white":
-                    if king_checked(crni) == "None":
-                        objekat.x += 75
-                        objekat.starix += 75
-                        objekat.y -= 150
-                        objekat.stariy -= 150
-                        return False
-                    objekat.x += 75
-                    objekat.starix += 75
-                    objekat.y -= 150
-                    objekat.stariy -= 150
-                else:
-                    if king_checked(bijeli) == "None":
-                        objekat.x += 75
-                        objekat.starix += 75
-                        objekat.y -= 150
-                        objekat.stariy -= 150
-                        return False
-                objekat.x += 75
-                objekat.starix += 75
-                objekat.y -= 150
-                objekat.stariy -= 150
+            if(enemy_colision(objekat, objekat.x, objekat.y) != "None"):
+                za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)
+            if objekat.color == "white":
+                if(za_brisanje != "None"):
+                    crni.pop(crni.index(za_brisanje))
+                if king_checked(crni) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    if (za_brisanje != "None"):
+                        crni.append(za_brisanje)
+                    return False
+                objekat.x = objekat.starix
+                objekat.y = objekat.stariy
+                if (za_brisanje != "None"):
+                    crni.append(za_brisanje)
+            else:
+                if (za_brisanje != "None"):
+                    bijeli.pop(bijeli.index(za_brisanje))
+                if king_checked(bijeli) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    if (za_brisanje != "None"):
+                        bijeli.append(za_brisanje)
+                    return False
+                objekat.x = objekat.starix
+                objekat.y = objekat.stariy
+                if (za_brisanje != "None"):
+                    bijeli.append(za_brisanje)
 
             objekat.x -= 75
             objekat.y -= 150
-            moved = objekat.move(potez)
-            if moved == True:
-                if objekat.color == "white":
-                    if king_checked(crni) == "None":
-                        objekat.x += 75
-                        objekat.starix += 75
-                        objekat.y += 150
-                        objekat.stariy += 150
-                        return False
-                    objekat.x += 75
-                    objekat.starix += 75
-                    objekat.y += 150
-                    objekat.stariy += 150
-                else:
-                    if king_checked(bijeli) == "None":
-                        objekat.x += 75
-                        objekat.starix += 75
-                        objekat.y += 150
-                        objekat.stariy += 150
-                        return False
-                objekat.x += 75
-                objekat.starix += 75
-                objekat.y += 150
-                objekat.stariy += 150
+            if (enemy_colision(objekat, objekat.x, objekat.y) != "None"):
+                za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)
+            if objekat.color == "white":
+                if (za_brisanje != "None"):
+                    crni.pop(crni.index(za_brisanje))
+                if king_checked(crni) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    if (za_brisanje != "None"):
+                        crni.append(za_brisanje)
+                    return False
+                objekat.x = objekat.starix
+                objekat.y = objekat.stariy
+                if (za_brisanje != "None"):
+                    crni.append(za_brisanje)
+            else:
+                if (za_brisanje != "None"):
+                    bijeli.pop(bijeli.index(za_brisanje))
+                if king_checked(bijeli) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    if (za_brisanje != "None"):
+                        bijeli.append(za_brisanje)
+                    return False
+            objekat.x = objekat.starix
+            objekat.y = objekat.stariy
+            if (za_brisanje != "None"):
+                bijeli.append(za_brisanje)
 
             objekat.x += 75
             objekat.y += 150
-            moved = objekat.move(potez)
-            if moved == True:
-                if objekat.color == "white":
-                    if king_checked(crni) == "None":
-                        objekat.x -= 75
-                        objekat.starix -= 75
-                        objekat.y -= 150
-                        objekat.stariy -= 150
-                        return False
-                    objekat.x -= 75
-                    objekat.starix -= 75
-                    objekat.y -= 150
-                    objekat.stariy -= 150
-                else:
-                    if king_checked(bijeli) == "None":
-                        objekat.x -= 75
-                        objekat.starix -= 75
-                        objekat.y -= 150
-                        objekat.stariy -= 150
-                        return False
-                objekat.x -= 75
-                objekat.starix -= 75
-                objekat.y -= 150
-                objekat.stariy -= 150
+            if (enemy_colision(objekat, objekat.x, objekat.y) != "None"):
+                za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)
+            if objekat.color == "white":
+                if (za_brisanje != "None"):
+                    crni.pop(crni.index(za_brisanje))
+                if king_checked(crni) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    return False
+                objekat.x = objekat.starix
+                objekat.y = objekat.stariy
+                if(za_brisanje != "None"):
+                    crni.append(za_brisanje)
+            else:
+                if(za_brisanje != "None"):
+                    bijeli.pop(bijeli.index(za_brisanje))
+                if king_checked(bijeli) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    return False
+            objekat.x = objekat.starix
+            objekat.y = objekat.stariy
+            if(za_brisanje != "None"):
+                bijeli.append(za_brisanje)
 
             objekat.x += 75
             objekat.y -= 150
-            moved = objekat.move(potez)
-            if moved == True:
-                if objekat.color == "white":
-                    if king_checked(crni) == "None":
-                        objekat.x -= 75
-                        objekat.starix -= 75
-                        objekat.y += 150
-                        objekat.stariy += 150
-                        return False
-                    objekat.x -= 75
-                    objekat.starix -= 75
-                    objekat.y += 150
-                    objekat.stariy += 150
-                else:
-                    if king_checked(bijeli) == "None":
-                        objekat.x -= 75
-                        objekat.starix -= 75
-                        objekat.y += 150
-                        objekat.stariy += 150
-                        return False
-                objekat.x -= 75
-                objekat.starix -= 75
-                objekat.y += 150
-                objekat.stariy += 150
+            if (enemy_colision(objekat, objekat.x, objekat.y) != "None"):
+                za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)
+            if objekat.color == "white":
+                if(za_brisanje != "None"):
+                    crni.pop(crni.index(za_brisanje))
+                if king_checked(crni) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    return False
+                objekat.x = objekat.starix
+                objekat.y = objekat.stariy
+                if(za_brisanje != "None"):
+                    crni.append(za_brisanje)
+            else:
+                if(za_brisanje != "None"):
+                    bijeli.pop(bijeli.index(za_brisanje))
+                if king_checked(bijeli) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    return False
+            objekat.x = objekat.starix
+            objekat.y = objekat.stariy
+            if(za_brisanje != "None"):
+                bijeli.append(za_brisanje)
 
             objekat.x -= 150
             objekat.y += 75
-            moved = objekat.move(potez)
-            if moved == True:
-                if objekat.color == "white":
-                    if king_checked(crni) == "None":
-                        objekat.x += 150
-                        objekat.starix += 150
-                        objekat.y -= 75
-                        objekat.stariy -= 75
-                        return False
-                    objekat.x += 150
-                    objekat.starix += 150
-                    objekat.y -= 75
-                    objekat.stariy -= 75
-                else:
-                    if king_checked(bijeli) == "None":
-                        objekat.x += 150
-                        objekat.starix += 150
-                        objekat.y -= 75
-                        objekat.stariy -= 75
-                        return False
-                objekat.x += 150
-                objekat.starix += 150
-                objekat.y -= 75
-                objekat.stariy -= 75
+            if (enemy_colision(objekat, objekat.x, objekat.y) != "None"):
+                za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)
+            if objekat.color == "white":
+                if(za_brisanje != "None"):
+                    crni.pop(crni.index(za_brisanje))
+                if king_checked(crni) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    return False
+                objekat.x = objekat.starix
+                objekat.y = objekat.stariy
+                if(za_brisanje != "None"):
+                    crni.append(za_brisanje)
+            else:
+                if(za_brisanje != "None"):
+                    bijeli.pop(bijeli.index(za_brisanje))
+                if king_checked(bijeli) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    return False
+            objekat.x = objekat.starix
+            objekat.y = objekat.stariy
+            if(za_brisanje != "None"):
+                bijeli.append(za_brisanje)
 
             objekat.x -= 150
             objekat.y -= 75
-            moved = objekat.move(potez)
-            if moved == True:
-                if objekat.color == "white":
-                    if king_checked(crni) == "None":
-                        objekat.x += 150
-                        objekat.starix += 150
-                        objekat.y += 75
-                        objekat.stariy += 75
-                        return False
-                    objekat.x += 150
-                    objekat.starix += 150
-                    objekat.y += 75
-                    objekat.stariy += 75
-                else:
-                    if king_checked(bijeli) == "None":
-                        objekat.x += 150
-                        objekat.starix += 150
-                        objekat.y += 75
-                        objekat.stariy += 75
-                        return False
-                objekat.x += 150
-                objekat.starix += 150
-                objekat.y += 75
-                objekat.stariy += 75
+            if (enemy_colision(objekat, objekat.x, objekat.y) != "None"):
+                za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)
+            if objekat.color == "white":
+                if(za_brisanje != "None"):
+                    crni.pop(crni.index(za_brisanje))
+                if king_checked(crni) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    return False
+                objekat.x = objekat.starix
+                objekat.y = objekat.stariy
+                if(za_brisanje != "None"):
+                    crni.append(za_brisanje)
+            else:
+                if(za_brisanje != "None"):
+                    bijeli.pop(bijeli.index(za_brisanje))
+                if king_checked(bijeli) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    return False
+            objekat.x = objekat.starix
+            objekat.y = objekat.stariy
+            if(za_brisanje != "None"):
+                bijeli.append(za_brisanje)
 
             objekat.x += 150
             objekat.y += 75
-            moved = objekat.move(potez)
-            if moved == True:
-                if objekat.color == "white":
-                    if king_checked(crni) == "None":
-                        objekat.x -= 150
-                        objekat.starix -= 150
-                        objekat.y -= 75
-                        objekat.stariy -= 75
-                        return False
-                    objekat.x -= 150
-                    objekat.starix -= 150
-                    objekat.y -= 75
-                    objekat.stariy -= 75
-                else:
-                    if king_checked(bijeli) == "None":
-                        objekat.x -= 150
-                        objekat.starix -= 150
-                        objekat.y -= 75
-                        objekat.stariy -= 75
-                        return False
-                objekat.x -= 150
-                objekat.starix -= 150
-                objekat.y -= 75
-                objekat.stariy -= 75
+            if (enemy_colision(objekat, objekat.x, objekat.y) != "None"):
+                za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)
+            if objekat.color == "white":
+                if(za_brisanje != "None"):
+                    crni.pop(crni.index(za_brisanje))
+                if king_checked(crni) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    return False
+                objekat.x = objekat.starix
+                objekat.y = objekat.stariy
+                if(za_brisanje != "None"):
+                    crni.append(za_brisanje)
+            else:
+                if(za_brisanje != "None"):
+                    bijeli.pop(bijeli.index(za_brisanje))
+                if king_checked(bijeli) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    return False
+            objekat.x = objekat.starix
+            objekat.y = objekat.stariy
+            if(za_brisanje != "None"):
+                bijeli.append(za_brisanje)
 
             objekat.x += 150
             objekat.y -= 75
-            moved = objekat.move(potez)
-            if moved == True:
-                if objekat.color == "white":
-                    if king_checked(crni) == "None":
-                        objekat.x -= 150
-                        objekat.starix -= 150
-                        objekat.y += 75
-                        objekat.stariy += 75
-                        return False
-                    objekat.x -= 150
-                    objekat.starix -= 150
-                    objekat.y += 75
-                    objekat.stariy += 75
-                else:
-                    if king_checked(bijeli) == "None":
-                        objekat.x -= 150
-                        objekat.starix -= 150
-                        objekat.y += 75
-                        objekat.stariy += 75
-                        return False
-                objekat.x -= 150
-                objekat.starix -= 150
-                objekat.y += 75
-                objekat.stariy += 75
+            if (enemy_colision(objekat, objekat.x, objekat.y) != "None"):
+                za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)
+            if objekat.color == "white":
+                if(za_brisanje != "None"):
+                    crni.pop(crni.index(za_brisanje))
+                if king_checked(crni) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    return False
+                objekat.x = objekat.starix
+                objekat.y = objekat.stariy
+                if(za_brisanje != "None"):
+                    crni.append(za_brisanje)
+            else:
+                if(za_brisanje != "None"):
+                    bijeli.pop(bijeli.index(za_brisanje))
+                if king_checked(bijeli) == "None":
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+                    return False
+            objekat.x = objekat.starix
+            objekat.y = objekat.stariy
+            if(za_brisanje != "None"):
+                bijeli.append(za_brisanje)
 
         if objekat.obj == "Bishop":
-            pass
+            kraj = 0
+            for i in range(7):
+                if(kraj == 1):
+                    break
+                objekat.x = objekat.starix + ((i+1) * 75)
+                objekat.y = objekat.stariy + ((i+1) * 75)
+                if (ally_colision(objekat, objekat.x, objekat.y) != "None"):
+                    kraj = 1
+                    continue
+                if (enemy_colision(objekat, objekat.x, objekat.y) != "None"):
+                    za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)  #Ovdje si
+                    kraj = 1
+                if objekat.color == "white":
+                    if (za_brisanje != "None"):
+                        crni.pop(crni.index(za_brisanje))
+                    if king_checked(crni) == "None":
+                        objekat.x = objekat.starix
+                        objekat.y = objekat.stariy
+                        return False
+                    if (za_brisanje != "None"):
+                        crni.append(za_brisanje)
+                else:
+                    if (za_brisanje != "None"):
+                        bijeli.pop(bijeli.index(za_brisanje))
+                    if king_checked(bijeli) == "None":
+                        objekat.x = objekat.starix
+                        objekat.y = objekat.stariy
+                        return False
+                if (za_brisanje != "None"):
+                    bijeli.append(za_brisanje)
+            objekat.x = objekat.starix
+            objekat.y = objekat.stariy
+
+            kraj = 0
+            for i in range(7):
+                if (kraj == 1):
+                    break
+                objekat.x = objekat.starix - ((i + 1) * 75)
+                objekat.y = objekat.stariy + ((i + 1) * 75)
+                if (ally_colision(objekat, objekat.x, objekat.y) != "None"):
+                    kraj = 1
+                    continue
+                if (enemy_colision(objekat, objekat.x, objekat.y) != "None"):
+                    za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)
+                    kraj = 1
+                if objekat.color == "white":
+                    if (za_brisanje != "None"):
+                        crni.pop(crni.index(za_brisanje))
+                    if king_checked(crni) == "None":
+                        objekat.x = objekat.starix
+                        objekat.y = objekat.stariy
+                        return False
+                    if (za_brisanje != "None"):
+                        crni.append(za_brisanje)
+                else:
+                    if (za_brisanje != "None"):
+                        bijeli.pop(bijeli.index(za_brisanje))
+                    if king_checked(bijeli) == "None":
+                        objekat.x = objekat.starix
+                        objekat.y = objekat.stariy
+                        return False
+                if (za_brisanje != "None"):
+                    bijeli.append(za_brisanje)
+            objekat.x = objekat.starix
+            objekat.y = objekat.stariy
+
+            kraj = 0
+            for i in range(7):
+                if (kraj == 1):
+                    break
+                objekat.x = objekat.starix + ((i + 1) * 75)
+                objekat.y = objekat.stariy - ((i + 1) * 75)
+                if (ally_colision(objekat, objekat.x, objekat.y) != "None"):
+                    kraj = 1
+                    continue
+                if (enemy_colision(objekat, objekat.x, objekat.y) != "None"):
+                    za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)
+                    kraj = 1
+                if objekat.color == "white":
+                    if (za_brisanje != "None"):
+                        crni.pop(crni.index(za_brisanje))
+                    if king_checked(crni) == "None":
+                        objekat.x = objekat.starix
+                        objekat.y = objekat.stariy
+                        return False
+                    if (za_brisanje != "None"):
+                        crni.append(za_brisanje)
+                else:
+                    if (za_brisanje != "None"):
+                        bijeli.pop(bijeli.index(za_brisanje))
+                    if king_checked(bijeli) == "None":
+                        objekat.x = objekat.starix
+                        objekat.y = objekat.stariy
+                        return False
+                if (za_brisanje != "None"):
+                    bijeli.append(za_brisanje)
+            objekat.x = objekat.starix
+            objekat.y = objekat.stariy
+
+            kraj = 0
+            for i in range(7):
+                print(objekat.x)
+                print(objekat.y)
+                if (kraj == 1):
+                    break
+                objekat.x = objekat.starix - ((i + 1) * 75)
+                objekat.y = objekat.stariy - ((i + 1) * 75)
+                if (ally_colision(objekat, objekat.x, objekat.y) != "None"):
+                    kraj = 1
+                    continue
+                if (enemy_colision(objekat, objekat.x, objekat.y) != "None"):
+                    za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)
+                    kraj = 1
+                if objekat.color == "white":
+                    if (za_brisanje != "None"):
+                        crni.pop(crni.index(za_brisanje))
+                    if king_checked(crni) == "None":
+                        objekat.x = objekat.starix
+                        objekat.y = objekat.stariy
+                        return False
+                    if (za_brisanje != "None"):
+                        crni.append(za_brisanje)
+                else:
+                    if (za_brisanje != "None"):
+                        bijeli.pop(bijeli.index(za_brisanje))
+                    if king_checked(bijeli) == "None":
+                        objekat.x = objekat.starix
+                        objekat.y = objekat.stariy
+                        return False
+                if (za_brisanje != "None"):
+                    bijeli.append(za_brisanje)
+            objekat.x = objekat.starix
+            objekat.y = objekat.stariy
+
+
 
         if objekat.obj == "Rook":
             pass
@@ -686,6 +729,110 @@ def king_checkmated(pieces, potez): # kad pozoves ovo moras potez vratiti... moz
 
         if objekat.obj == "King":
             pass
+
+    return True
+    '''
+            if objekat.color == "white":
+        if objekat.obj == "Pawn":
+            objekat.y -= 75
+            moved = objekat.move(potez)
+            if moved == True:
+                if king_checked(crni) == "None":
+                    objekat.x += 75
+                    objekat.starix += 75
+                    return False
+                objekat.x += 75
+                objekat.starix += 75
+
+            objekat.y -= 150
+            moved = objekat.move(potez)
+            if moved == True:
+                if king_checked(crni) == "None":
+                    objekat.x += 150
+                    objekat.starix += 150
+                    return False
+                objekat.x += 150
+                objekat.starix += 150
+
+            objekat.x -= 75
+            objekat.y -= 75
+            moved = objekat.move(potez)
+            if moved == True:
+                if king_checked(crni) == "None":
+                    objekat.x += 75
+                    objekat.starix += 75
+                    objekat.y += 75
+                    objekat.stariy += 75
+                    return False
+                objekat.x += 75
+                objekat.starix += 75
+                objekat.y += 75
+                objekat.stariy += 75
+            objekat.x += 75
+            objekat.y -= 75
+            moved = objekat.move(potez)
+            if moved == True:
+                if king_checked(crni) == "None":
+                    objekat.x -= 75
+                    objekat.starix -= 75
+                    objekat.y += 75
+                    objekat.stariy += 75
+                    return False
+                objekat.x -= 75
+                objekat.starix -= 75
+                objekat.y += 75
+                objekat.stariy += 75
+    else:
+        if objekat.obj == "Pawn":
+            objekat.y += 75
+            moved = objekat.move(potez)
+            if moved == True:
+                if king_checked(bijeli) == "None":
+                    objekat.x -= 75
+                    objekat.starix -= 75
+                    return False
+                objekat.x -= 75
+                objekat.starix -= 75
+
+            objekat.y += 150
+            moved = objekat.move(potez)
+            if moved == True:
+                if king_checked(bijeli) == "None":
+                    objekat.x -= 150
+                    objekat.starix -= 150
+                    return False
+                objekat.x -= 150
+                objekat.starix -= 150
+
+            objekat.x += 75
+            objekat.y += 75
+            moved = objekat.move(potez)
+            if moved == True:
+                if king_checked(bijeli) == "None":
+                    objekat.x -= 75
+                    objekat.starix -= 75
+                    objekat.y -= 75
+                    objekat.stariy -= 75
+                    return False
+                objekat.x -= 75
+                objekat.starix -= 75
+                objekat.y -= 75
+                objekat.stariy -= 75
+            objekat.x -= 75
+            objekat.y += 75
+            moved = objekat.move(potez)
+            if moved == True:
+                if king_checked(bijeli) == "None":
+                    objekat.x += 75
+                    objekat.starix += 75
+                    objekat.y -= 75
+                    objekat.stariy -= 75
+                    return False
+                objekat.x += 75
+                objekat.starix += 75
+                objekat.y -= 75
+                objekat.stariy -= 75
+    '''
 
 
 class Pawn:
@@ -2436,6 +2583,15 @@ crni.append(Rook(2.5 + 525, 2.5, 'black'))
 bijeli.append(Queen(2.5 + 225, 2.5 + 525, 'white'))
 crni.append(Queen(2.5 + 225, 2.5, 'black'))
 
+promotion = []
+promotion.append(Queen(2.5, 2.5, 'white'))
+promotion.append(Queen(2.5, 2.5, 'black'))
+promotion.append(Rook(2.5, 2.5 + 75, 'white'))
+promotion.append(Rook(2.5, 2.5 + 75, 'black'))
+promotion.append(Bishop(2.5, 2.5 + 150, 'white'))
+promotion.append(Bishop(2.5, 2.5 + 150, 'black'))
+promotion.append(Knight(2.5, 2.5 + 225, 'white'))
+promotion.append(Knight(2.5, 2.5 + 225, 'black'))
 
 
 def draw_window():
@@ -2462,6 +2618,7 @@ def main():
     run = True
     pressed = False
     objekat = "None"
+    promo = "None"
     while run:
 
         clock.tick(FPS)
@@ -2470,39 +2627,107 @@ def main():
                 run = False
                 pygame.quit()
                 exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pressed = True
-                x, y = pygame.mouse.get_pos()
-                if(potez % 2 == 1):
-                    for piece in bijeli:
-                        if (piece.x - 2.5 < x < piece.x + 72.5 and piece.y - 2.5 < y < piece.y + 72.5):
-                            objekat = piece
-                            break
-                else:
-                    for piece in crni:
-                        if (piece.x - 2.5 < x < piece.x + 72.5 and piece.y - 2.5 < y < piece.y + 72.5):
-                            objekat = piece
-                            break
-            if event.type == pygame.MOUSEMOTION:
-                mouseMove = event.rel
-                if pressed == True and objekat != "None":
-                    objekat.x += mouseMove[0]
-                    objekat.y += mouseMove[1]
-            if event.type == pygame.MOUSEBUTTONUP:
-                pressed = False
-                moved = False
-
-                if objekat != "None":
-                    if(potez%2 == 1):
-                        moved = objekat.move(potez)
+            if(promo == "None"):
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pressed = True
+                    x, y = pygame.mouse.get_pos()
+                    if(potez % 2 == 1):
+                        for piece in bijeli:
+                            if (piece.x - 2.5 < x < piece.x + 72.5 and piece.y - 2.5 < y < piece.y + 72.5):
+                                objekat = piece
+                                break
                     else:
-                        moved = objekat.move(potez)
-                    if moved:
-                        potez += 1
-                objekat = "None"
+                        for piece in crni:
+                            if (piece.x - 2.5 < x < piece.x + 72.5 and piece.y - 2.5 < y < piece.y + 72.5):
+                                objekat = piece
+                                break
+                if event.type == pygame.MOUSEMOTION:
+                    mouseMove = event.rel
+                    if pressed == True and objekat != "None":
+                        objekat.x += mouseMove[0]
+                        objekat.y += mouseMove[1]
+                if event.type == pygame.MOUSEBUTTONUP:
+                    pressed = False
+                    moved = False
+
+                    if objekat != "None":
+                        if(potez%2 == 1):
+                            moved = objekat.move(potez)
+                        else:
+                            moved = objekat.move(potez)
+                        if moved:
+                            if(objekat.obj == 'Pawn'):
+                                if objekat.y == 2.5:
+                                    promo = objekat
+                                if objekat.y == 527.5:
+                                    promo = objekat
+
+                            potez += 1
+                        if(king_checked(bijeli)):
+                            if(king_checkmated(bijeli, potez)):
+                                print("true")
+                            else:
+                                print("false")
+                        if (king_checked(crni)):
+                            if (king_checkmated(crni, potez)):
+                                print("true2")
+                            else:
+                                print("false2")
+                    objekat = "None"
+            else:
+                WIN.fill(BLUE)
+                for prom in promotion:
+                    if promo.color == "white":
+                        if(prom.color == "white"):
+                            prom.draw(WIN)
+                    else:
+                        if (prom.color == "black"):
+                            prom.draw(WIN)
+                pygame.display.update()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pressed = True
+                    x, y = pygame.mouse.get_pos()
+                    if 0 <= x <= 75 and 0<y<75:
+                        if(promo.color == "white"):
+                            bijeli.append(Queen(promo.x, 2.5, 'white'))
+                            bijeli.pop(bijeli.index(promo))
+                        else:
+                            crni.append(Queen(promo.x, 527.5, 'black'))
+                            crni.pop(crni.index(promo))
+                        promo = "None"
+                        continue
+                    if 0 <= x <= 75 and 75 < y < 150:
+                        if (promo.color == "white"):
+                            bijeli.append(Rook(promo.x, 2.5, 'white'))
+                            bijeli.pop(bijeli.index(promo))
+                        else:
+                            crni.append(Rook(promo.x, 527.5, 'black'))
+                            crni.pop(crni.index(promo))
+                        promo = "None"
+                        continue
+                    if 0 <= x <= 75 and 150 < y < 225:
+                        if (promo.color == "white"):
+                            bijeli.append(Bishop(promo.x, 2.5, 'white'))
+                            bijeli.pop(bijeli.index(promo))
+                        else:
+                            crni.append(Bishop(promo.x, 527.5, 'black'))
+                            crni.pop(crni.index(promo))
+                        promo = "None"
+                        continue
+                    if 0 <= x <= 75 and 225 < y < 300:
+                        if (promo.color == "white"):
+                            bijeli.append(Knight(promo.x, 2.5, 'white'))
+                            bijeli.pop(bijeli.index(promo))
+                        else:
+                            crni.append(Knight(promo.x, 527.5, 'black'))
+                            crni.pop(crni.index(promo))
+                        promo = "None"
+                        continue
 
 
-        draw_window()
+
+        if(promo == "None"):
+            draw_window()
 
 
 
