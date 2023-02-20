@@ -1,6 +1,7 @@
-#Fale checkmate (blizu kraja samo fali par stvari i ne radi dobro sa pijunima),
+# Fale checkmate (blizu kraja samo fali par stvari, enpassanti kod pijuna fale),
 # stalemate, neki win screen nakon checkmatea,
 # neki meni, mozda ljepsi izgled malo, indikator za check,
+# 50 move rule
 # za_brisanje = "None" dodati u checkmated
 
 import pygame
@@ -373,12 +374,125 @@ def king_checkmated(pieces, potez): # kad pozoves ovo moras potez vratiti... moz
                                                                                                    objekat.y - 75)):
                     pass
                 else:
-                    objekat.x -= 75
+                    objekat.y -= 75
                     if king_checked(crni) == "None":
-                        objekat.x = objekat.starix
                         objekat.y = objekat.stariy
                         return False
                 objekat.y = objekat.stariy
+
+                if(objekat.stariy == 452.5):
+                    if (ally_colision(objekat, objekat.x, objekat.y - 150) != "None" or enemy_colision(objekat, objekat.x, objekat.y - 150) != "None" or border_colision(objekat.x, objekat.y - 150)):
+                        pass
+                    else:
+                        objekat.y -= 150
+                        if king_checked(crni) == "None":
+                            objekat.y = objekat.stariy
+                            return False
+                    objekat.y = objekat.stariy
+
+                if (ally_colision(objekat, objekat.x - 75, objekat.y - 75) != "None" or border_colision(objekat.x - 75, objekat.y - 75)):
+                    pass
+                else:
+                    if(enemy_colision(objekat, objekat.x - 75, objekat.y - 75) != "None"):
+                        objekat.x -= 75
+                        objekat.y -= 75
+                        za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)
+                        crni.pop(crni.index(za_brisanje))
+                        if king_checked(crni) == "None":
+                            objekat.y = objekat.stariy
+                            objekat.x = objekat.starix
+                            crni.append(za_brisanje)
+                            return False
+                        crni.append(za_brisanje)
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+
+
+                if (ally_colision(objekat, objekat.x + 75, objekat.y - 75) != "None" or border_colision(objekat.x + 75, objekat.y - 75)):
+                    pass
+                else:
+                    if(enemy_colision(objekat, objekat.x + 75, objekat.y - 75) != "None"):
+                        objekat.x += 75
+                        objekat.y -= 75
+                        za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)
+                        crni.pop(crni.index(za_brisanje))
+                        if king_checked(crni) == "None":
+                            objekat.y = objekat.stariy
+                            objekat.x = objekat.starix
+                            crni.append(za_brisanje)
+                            return False
+                        crni.append(za_brisanje)
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+
+
+
+
+
+            else:
+
+                if (ally_colision(objekat, objekat.x, objekat.y + 75) != "None" or enemy_colision(objekat, objekat.x, objekat.y + 75) != "None" or border_colision(objekat.x,
+                                                                                                   objekat.y + 75)):
+                    pass
+                else:
+                    objekat.y += 75
+                    if king_checked(bijeli) == "None":
+                        objekat.y = objekat.stariy
+                        return False
+                    objekat.y = objekat.stariy
+
+
+                if (objekat.stariy == 77.5):
+                    if (ally_colision(objekat, objekat.x, objekat.y + 150) != "None" or enemy_colision(objekat,
+                                                                                                       objekat.x,
+                                                                                                       objekat.y + 150) != "None" or border_colision(
+                            objekat.x, objekat.y + 150)):
+                        pass
+                    else:
+                        objekat.y += 150
+                        if king_checked(bijeli) == "None":
+                            objekat.y = objekat.stariy
+                            return False
+                    objekat.y = objekat.stariy
+
+                if (ally_colision(objekat, objekat.x - 75, objekat.y + 75) != "None" or border_colision(objekat.x - 75, objekat.y + 75)):
+                    pass
+                else:
+                    if(enemy_colision(objekat, objekat.x - 75, objekat.y + 75) != "None"):
+                        objekat.x -= 75
+                        objekat.y += 75
+                        za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)
+                        bijeli.pop(bijeli.index(za_brisanje))
+                        if king_checked(bijeli) == "None":
+                            objekat.y = objekat.stariy
+                            objekat.x = objekat.starix
+                            bijeli.append(za_brisanje)
+                            return False
+                        bijeli.append(za_brisanje)
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+
+
+                if (ally_colision(objekat, objekat.x + 75, objekat.y + 75) != "None" or border_colision(objekat.x + 75, objekat.y + 75)):
+                    pass
+                else:
+                    if(enemy_colision(objekat, objekat.x + 75, objekat.y + 75) != "None"):
+                        objekat.x += 75
+                        objekat.y += 75
+                        za_brisanje = enemy_colision(objekat, objekat.x, objekat.y)
+                        bijeli.pop(bijeli.index(za_brisanje))
+                        if king_checked(bijeli) == "None":
+                            objekat.y = objekat.stariy
+                            objekat.x = objekat.starix
+                            bijeli.append(za_brisanje)
+                            return False
+                        bijeli.append(za_brisanje)
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+
+
+
+
         if objekat.obj == "Knight":
             objekat.x -= 75
             objekat.y += 150
@@ -627,7 +741,6 @@ def king_checkmated(pieces, potez): # kad pozoves ovo moras potez vratiti... moz
             objekat.y = objekat.stariy
             if(za_brisanje != "None"):
                 bijeli.append(za_brisanje)
-
         if objekat.obj == "Bishop":
             kraj = 0
             za_brisanje = "None"
@@ -796,7 +909,6 @@ def king_checkmated(pieces, potez): # kad pozoves ovo moras potez vratiti... moz
 
             objekat.x = objekat.starix
             objekat.y = objekat.stariy
-
         if objekat.obj == "Rook":
             kraj = 0
             za_brisanje = "None"
@@ -956,7 +1068,6 @@ def king_checkmated(pieces, potez): # kad pozoves ovo moras potez vratiti... moz
 
             objekat.x = objekat.starix
             objekat.y = objekat.stariy
-
         if objekat.obj == "Queen":
             kraj = 0
             za_brisanje = "None"
@@ -1284,7 +1395,6 @@ def king_checkmated(pieces, potez): # kad pozoves ovo moras potez vratiti... moz
 
             objekat.x = objekat.starix
             objekat.y = objekat.stariy
-
         if objekat.obj == "King":
             if (ally_colision(objekat, objekat.x + 75, objekat.y) != "None" or border_colision(objekat.x + 75, objekat.y)):
                 pass
