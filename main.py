@@ -365,7 +365,7 @@ def king_checked(pieces):
 
     return "None"
 
-def king_checkmated(pieces, potez): # kad pozoves ovo moras potez vratiti... mozda i ne mora fale jos likova da dovrsis
+def king_checkmated(pieces, potez):
     for objekat in pieces:
         za_brisanje = "None"
         if objekat.obj == "Pawn":
@@ -425,6 +425,44 @@ def king_checkmated(pieces, potez): # kad pozoves ovo moras potez vratiti... moz
                     objekat.x = objekat.starix
                     objekat.y = objekat.stariy
 
+
+                if (ally_colision(objekat, objekat.x - 75, objekat.y) != "None" or border_colision(objekat.x - 75, objekat.y - 75)):
+                    pass
+                else:
+                    if(enemy_colision(objekat, objekat.x - 75, objekat.y) != "None"):
+                        if (enemy_colision(objekat, objekat.x - 75, objekat.y)).obj == "Pawn":
+                            if(enemy_colision(objekat, objekat.x - 75, objekat.y).enp == potez - 1):
+                                za_brisanje = enemy_colision(objekat, objekat.x - 75, objekat.y)
+                                objekat.x -= 75
+                                objekat.y -= 75
+                                crni.pop(crni.index(za_brisanje))
+                                if king_checked(crni) == "None":
+                                    objekat.y = objekat.stariy
+                                    objekat.x = objekat.starix
+                                    crni.append(za_brisanje)
+                                    return False
+                                crni.append(za_brisanje)
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+
+                if (ally_colision(objekat, objekat.x + 75, objekat.y) != "None" or border_colision(objekat.x + 75, objekat.y - 75)):
+                    pass
+                else:
+                    if(enemy_colision(objekat, objekat.x + 75, objekat.y) != "None"):
+                        if(enemy_colision(objekat, objekat.x + 75, objekat.y)).obj == "Pawn":
+                            if(enemy_colision(objekat, objekat.x + 75, objekat.y).enp == potez - 1):
+                                za_brisanje = enemy_colision(objekat, objekat.x + 75, objekat.y)
+                                objekat.x += 75
+                                objekat.y -= 75
+                                crni.pop(crni.index(za_brisanje))
+                                if king_checked(crni) == "None":
+                                    objekat.y = objekat.stariy
+                                    objekat.x = objekat.starix
+                                    crni.append(za_brisanje)
+                                    return False
+                                crni.append(za_brisanje)
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
 
 
 
@@ -492,6 +530,43 @@ def king_checkmated(pieces, potez): # kad pozoves ovo moras potez vratiti... moz
 
 
 
+                if (ally_colision(objekat, objekat.x - 75, objekat.y) != "None" or border_colision(objekat.x - 75, objekat.y + 75)):
+                    pass
+                else:
+                    if(enemy_colision(objekat, objekat.x - 75, objekat.y) != "None"):
+                        if (enemy_colision(objekat, objekat.x - 75, objekat.y)).obj == "Pawn":
+                            if(enemy_colision(objekat, objekat.x - 75, objekat.y).enp == potez - 1):
+                                za_brisanje = enemy_colision(objekat, objekat.x - 75, objekat.y)
+                                objekat.x -= 75
+                                objekat.y += 75
+                                bijeli.pop(bijeli.index(za_brisanje))
+                                if king_checked(bijeli) == "None":
+                                    objekat.y = objekat.stariy
+                                    objekat.x = objekat.starix
+                                    bijeli.append(za_brisanje)
+                                    return False
+                                bijeli.append(za_brisanje)
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
+
+                if (ally_colision(objekat, objekat.x + 75, objekat.y) != "None" or border_colision(objekat.x + 75, objekat.y + 75)):
+                    pass
+                else:
+                    if(enemy_colision(objekat, objekat.x + 75, objekat.y) != "None"):
+                        if(enemy_colision(objekat, objekat.x + 75, objekat.y).enp == potez + 1):
+                            if (enemy_colision(objekat, objekat.x + 75, objekat.y)).obj == "Pawn":
+                                za_brisanje = enemy_colision(objekat, objekat.x + 75, objekat.y)
+                                objekat.x += 75
+                                objekat.y += 75
+                                bijeli.pop(bijeli.index(za_brisanje))
+                                if king_checked(bijeli) == "None":
+                                    objekat.y = objekat.stariy
+                                    objekat.x = objekat.starix
+                                    bijeli.append(za_brisanje)
+                                    return False
+                                bijeli.append(za_brisanje)
+                    objekat.x = objekat.starix
+                    objekat.y = objekat.stariy
 
         if objekat.obj == "Knight":
             objekat.x -= 75
@@ -1665,8 +1740,6 @@ def king_checkmated(pieces, potez): # kad pozoves ovo moras potez vratiti... moz
             objekat.y = objekat.stariy
 
     return True
-
-
 
 class Pawn:
     def __init__(self, x, y, color):
@@ -3373,8 +3446,6 @@ class King:
             self.y = self.stariy
             return False
 
-
-
 bijeli = []
 crni = []
 
@@ -3496,16 +3567,16 @@ def main():
                                     promo = objekat
 
                             potez += 1
-                        if(king_checked(bijeli)):
-                            if(king_checkmated(bijeli, potez)):
-                                print("true")
-                            else:
-                                print("false")
-                        if (king_checked(crni)):
-                            if (king_checkmated(crni, potez)):
-                                print("true2")
-                            else:
-                                print("false2")
+                        if(king_checked(bijeli) != "None"):
+                            print(king_checkmated(crni, potez))
+                            if(king_checkmated(crni, potez) == True):
+                                print("Black checkmated")
+                        elif (king_checked(crni) != "None"):
+                            if (king_checkmated(bijeli, potez) == True):
+                                print("White checkmated")
+                        else:
+                            if ((king_checkmated(bijeli, potez) == True) or (king_checkmated(crni, potez) == True)):
+                                print("Stalemate")
                     objekat = "None"
             else:
                 WIN.fill(BLUE)
