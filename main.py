@@ -1,7 +1,8 @@
-# Fale checkmate (blizu kraja samo fali par stvari, enpassanti kod pijuna fale),
-# stalemate, neki win screen nakon checkmatea,
+# Fale:
+# neki win screen nakon checkmatea,
 # neki meni, mozda ljepsi izgled malo, indikator za check,
 # 50 move rule
+# Zvukovi
 # za_brisanje = "None" dodati u checkmated
 
 import pygame
