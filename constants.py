@@ -2,8 +2,8 @@ import os
 
 import pygame
 
-
-WIDTH, HEIGHT = 600, 600
+WIDTH = 750
+HEIGHT = 600
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -52,6 +52,3 @@ White_King = pygame.transform.rotate(pygame.transform.scale(White_King_Image, (P
 
 Black_King_Image = pygame.image.load(os.path.join('pcs', 'black_king.png'))
 Black_King = pygame.transform.rotate(pygame.transform.scale(Black_King_Image, (PIECE_WIDTH, PIECE_HEIGHT)), 0)
-
-bijeli = []
-crni = []
