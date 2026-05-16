@@ -1,4 +1,6 @@
 
+import pygame
+
 from constants import Black_Bishop, Black_King, Black_Knight, Black_Pawn, Black_Queen, Black_Rook, White_Bishop, White_King, White_Knight, White_Pawn, White_Queen, White_Rook
 
 
@@ -15,12 +17,24 @@ class Pawn:
         else:
             self.object = Black_Pawn
 
-    def draw(self, win, board_x, board_y):
+    def draw(self, win, board_x, board_y, tile_size, use_board_position=True):
 
-        x = board_x + self.col * 75
-        y = board_y + self.row * 75
+        if use_board_position:
 
-        win.blit(self.object, (x, y))
+            draw_x = board_x + self.col * tile_size
+            draw_y = board_y + self.row * tile_size
+
+        else:
+
+            draw_x = board_x
+            draw_y = board_y
+
+        scaled_image = pygame.transform.scale(
+            self.object,
+            (tile_size, tile_size)
+)
+
+        win.blit(scaled_image, (draw_x, draw_y))
 
 
     def valid_move(self, new_row, new_col):
@@ -62,12 +76,24 @@ class Knight:
         else:
             self.object = Black_Knight
     
-    def draw(self, win, board_x, board_y):
+    def draw(self, win, board_x, board_y, tile_size, use_board_position=True):
 
-        x = board_x + self.col * 75
-        y = board_y + self.row * 75
+        if use_board_position:
 
-        win.blit(self.object, (x, y))
+            draw_x = board_x + self.col * tile_size
+            draw_y = board_y + self.row * tile_size
+
+        else:
+
+            draw_x = board_x
+            draw_y = board_y
+
+        scaled_image = pygame.transform.scale(
+            self.object,
+            (tile_size, tile_size)
+)
+
+        win.blit(scaled_image, (draw_x, draw_y))
 
     def valid_move(self, new_row, new_col):
 
@@ -93,12 +119,24 @@ class Bishop:
         else:
             self.object = Black_Bishop
 
-    def draw(self, win, board_x, board_y):
+    def draw(self, win, board_x, board_y, tile_size, use_board_position=True):
 
-        x = board_x + self.col * 75
-        y = board_y + self.row * 75
+        if use_board_position:
 
-        win.blit(self.object, (x, y))
+            draw_x = board_x + self.col * tile_size
+            draw_y = board_y + self.row * tile_size
+
+        else:
+
+            draw_x = board_x
+            draw_y = board_y
+
+        scaled_image = pygame.transform.scale(
+            self.object,
+            (tile_size, tile_size)
+)
+
+        win.blit(scaled_image, (draw_x, draw_y))
 
     def valid_move(self, new_row, new_col):
 
@@ -120,12 +158,24 @@ class Rook:
         else:
             self.object = Black_Rook
 
-    def draw(self, win, board_x, board_y):
+    def draw(self, win, board_x, board_y, tile_size, use_board_position=True):
 
-        x = board_x + self.col * 75
-        y = board_y + self.row * 75
+        if use_board_position:
 
-        win.blit(self.object, (x, y))
+            draw_x = board_x + self.col * tile_size
+            draw_y = board_y + self.row * tile_size
+
+        else:
+
+            draw_x = board_x
+            draw_y = board_y
+
+        scaled_image = pygame.transform.scale(
+            self.object,
+            (tile_size, tile_size)
+)
+
+        win.blit(scaled_image, (draw_x, draw_y))
 
     def valid_move(self, new_row, new_col):
 
@@ -148,12 +198,24 @@ class Queen:
         else:
             self.object = Black_Queen
         
-    def draw(self, win, board_x, board_y):
+    def draw(self, win, board_x, board_y, tile_size, use_board_position=True):
 
-        x = board_x + self.col * 75
-        y = board_y + self.row * 75
+        if use_board_position:
 
-        win.blit(self.object, (x, y))
+            draw_x = board_x + self.col * tile_size
+            draw_y = board_y + self.row * tile_size
+
+        else:
+
+            draw_x = board_x
+            draw_y = board_y
+
+        scaled_image = pygame.transform.scale(
+            self.object,
+            (tile_size, tile_size)
+)
+
+        win.blit(scaled_image, (draw_x, draw_y))
 
     def valid_move(self, new_row, new_col):
 
@@ -181,12 +243,24 @@ class King:
         else:
             self.object = Black_King
     
-    def draw(self, win, board_x, board_y):
+    def draw(self, win, board_x, board_y, tile_size, use_board_position=True):
 
-        x = board_x + self.col * 75
-        y = board_y + self.row * 75
+        if use_board_position:
 
-        win.blit(self.object, (x, y))
+            draw_x = board_x + self.col * tile_size
+            draw_y = board_y + self.row * tile_size
+
+        else:
+
+            draw_x = board_x
+            draw_y = board_y
+
+        scaled_image = pygame.transform.scale(
+            self.object,
+            (tile_size, tile_size)
+)
+
+        win.blit(scaled_image, (draw_x, draw_y))
 
     def valid_move(self, new_row, new_col):
 

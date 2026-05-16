@@ -5,6 +5,11 @@ import pygame
 WIDTH = 750
 HEIGHT = 600
 
+SIDE_MARGIN = 20
+TOP_MARGIN = 120
+SPACING = 20
+MINI_SIZE = 180
+
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)

@@ -4,21 +4,22 @@ from constants import WHITE, BLUE
 from pieceClasses import Pawn, Rook, Knight, Bishop, Queen, King
 
 
-class Game:
+class ChessGame:
 
-    TILE_SIZE = 75
-
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    def __init__(self):
 
         self.turn = "white"
         self.selected_piece = None
+
+        self.game_over = False
+        self.winner = None
+        self.is_draw = False
 
         self.last_move = None
 
         self.promoting_pawn = None
 
+        self.move_history = []
         self.white_pieces = []
         self.black_pieces = []
 
@@ -53,81 +54,6 @@ class Game:
 
         self.white_pieces.append(King(7, 4, "white"))
         self.black_pieces.append(King(0, 4, "black"))
-
-    def draw(self, win):
-
-        for row in range(8):
-
-            for col in range(8):
-
-                color = WHITE
-
-                if (row + col) % 2 == 1:
-                    color = BLUE
-
-                pygame.draw.rect(
-                    win,
-                    color,
-                    (
-                        self.x + col * self.TILE_SIZE,
-                        self.y + row * self.TILE_SIZE,
-                        self.TILE_SIZE,
-                        self.TILE_SIZE
-                    )
-                )
-
-        for piece in self.white_pieces:
-            piece.draw(win, self.x, self.y)
-
-        for piece in self.black_pieces:
-            piece.draw(win, self.x, self.y)
-
-        if self.selected_piece is not None:
-
-            pygame.draw.rect(
-                win,
-                (255, 0, 0),
-                (
-                    self.x + self.selected_piece.col * self.TILE_SIZE,
-                    self.y + self.selected_piece.row * self.TILE_SIZE,
-                    self.TILE_SIZE,
-                    self.TILE_SIZE
-                ),
-                3
-            )
-    
-        if self.is_in_check("white"):
-
-            king = self.get_king("white")
-
-            pygame.draw.rect(
-                win,
-                (255, 0, 0),
-                (
-                    self.x + king.col * self.TILE_SIZE,
-                    self.y + king.row * self.TILE_SIZE,
-                    self.TILE_SIZE,
-                    self.TILE_SIZE
-                ),
-                5
-            )
-
-        if self.is_in_check("black"):
-
-            king = self.get_king("black")
-
-            pygame.draw.rect(
-                win,
-                (255, 0, 0),
-                (
-                    self.x + king.col * self.TILE_SIZE,
-                    self.y + king.row * self.TILE_SIZE,
-                    self.TILE_SIZE,
-                    self.TILE_SIZE
-                ),
-                5
-            )
-        self.draw_promotion_menu(win)
 
     def get_piece_at(self, row, col):
 
@@ -166,15 +92,10 @@ class Game:
 
         return False
 
-    def handle_click(self, mouse_x, mouse_y):
+    def handle_click(self, row, col):
 
-        if self.promoting_pawn is not None:
-
-            self.handle_promotion_click(mouse_x, mouse_y)
+        if self.game_over:
             return
-
-        col = (mouse_x - self.x) // self.TILE_SIZE
-        row = (mouse_y - self.y) // self.TILE_SIZE
 
         if not (0 <= row < 8 and 0 <= col < 8):
             return
@@ -324,6 +245,15 @@ class Game:
                         col
                     )
 
+                    notation = self.create_move_notation(
+                        old_row,
+                        old_col,
+                        row,
+                        col
+                    )
+
+                    self.move_history.append(notation)
+
                     self.turn = (
                         "black"
                         if self.turn == "white"
@@ -332,11 +262,18 @@ class Game:
 
                     if self.is_checkmate(self.turn):
 
-                        print(f"{self.turn} is checkmated")
+                        self.game_over = True
+
+                        self.winner = (
+                            "black"
+                            if self.turn == "white"
+                            else "white"
+                        )
 
                     elif self.is_stalemate(self.turn):
 
-                        print("Stalemate")
+                        self.game_over = True
+                        self.is_draw = True
 
         self.selected_piece = None
     
@@ -619,52 +556,13 @@ class Game:
             new_col == col
         )
 
-    def draw_promotion_menu(self, win):
-
-        if self.promoting_pawn is None:
-            return
-
-        menu_x = 620
-        menu_y = 50
-
-        pygame.draw.rect(
-            win,
-            (40, 40, 40),
-            (menu_x, menu_y, 100, 320)
-        )
-
-        color = self.promoting_pawn.color
-
-        pieces = [
-            Queen(0, 0, color),
-            Rook(0, 0, color),
-            Bishop(0, 0, color),
-            Knight(0, 0, color)
-        ]
-
-        for i, piece in enumerate(pieces):
-
-            piece.draw(
-                win,
-                menu_x,
-                menu_y + i * 75
-            )
-    def handle_promotion_click(self, mouse_x, mouse_y):
-
-        menu_x = 620
-        menu_y = 50
-
-        if not (
-            menu_x <= mouse_x <= menu_x + 100
-        ):
-            return
-
-        option = (mouse_y - menu_y) // 75
-
-        if option not in [0, 1, 2, 3]:
-            return
+    
+    def promote_pawn(self, piece_type):
 
         pawn = self.promoting_pawn
+
+        if pawn is None:
+            return
 
         if pawn.color == "white":
             pieces = self.white_pieces
@@ -677,16 +575,220 @@ class Game:
 
         pieces.remove(pawn)
 
-        if option == 0:
-            pieces.append(Queen(row, col, color))
+        if piece_type == "Queen":
+            pieces.append(
+                Queen(row, col, color)
+            )
 
-        elif option == 1:
-            pieces.append(Rook(row, col, color))
+        elif piece_type == "Rook":
+            pieces.append(
+                Rook(row, col, color)
+            )
 
-        elif option == 2:
-            pieces.append(Bishop(row, col, color))
+        elif piece_type == "Bishop":
+            pieces.append(
+                Bishop(row, col, color)
+            )
 
-        elif option == 3:
-            pieces.append(Knight(row, col, color))
+        elif piece_type == "Knight":
+            pieces.append(
+                Knight(row, col, color)
+            )
 
         self.promoting_pawn = None
+    
+    def board_to_chess_notation(self, row, col):
+
+        file = chr(ord('a') + col)
+        rank = str(8 - row)
+
+        return file + rank
+
+    def create_move_notation(
+        self,
+        start_row,
+        start_col,
+        end_row,
+        end_col
+    ):
+
+        start = self.board_to_chess_notation(
+            start_row,
+            start_col
+        )
+
+        end = self.board_to_chess_notation(
+            end_row,
+            end_col
+        )
+
+        return start + end
+    
+    def chess_to_board(self, notation):
+
+        file = notation[0]
+        rank = notation[1]
+
+        col = ord(file) - ord('a')
+        row = 8 - int(rank)
+
+        return row, col
+
+    def play_move(self, notation):
+
+        start = notation[:2]
+        end = notation[2:4]
+
+        promotion_piece = None
+
+        if len(notation) == 5:
+            promotion_piece = notation[4]
+
+        start_row, start_col = self.chess_to_board(start)
+        end_row, end_col = self.chess_to_board(end)
+
+        piece = self.get_piece_at(
+            start_row,
+            start_col
+        )
+
+        if piece is None:
+            return False
+
+        target = self.get_piece_at(
+            end_row,
+            end_col
+        )
+
+        if (
+            piece.obj == "King"
+            and
+            abs(end_col - start_col) == 2
+        ):
+
+            if end_col > start_col:
+
+                rook = self.get_piece_at(
+                    start_row,
+                    7
+                )
+
+                if rook is not None:
+
+                    rook.col = 5
+                    rook.has_moved = True
+
+            else:
+
+                rook = self.get_piece_at(
+                    start_row,
+                    0
+                )
+
+                if rook is not None:
+
+                    rook.col = 3
+                    rook.has_moved = True
+
+        if (
+            piece.obj == "Pawn"
+            and
+            target is None
+            and
+            start_col != end_col
+        ):
+
+            captured_pawn = self.get_piece_at(
+                start_row,
+                end_col
+            )
+
+            if captured_pawn is not None:
+
+                if captured_pawn.color == "white":
+                    self.white_pieces.remove(captured_pawn)
+                else:
+                    self.black_pieces.remove(captured_pawn)
+
+        if target is not None:
+
+            if target.color == "white":
+                self.white_pieces.remove(target)
+            else:
+                self.black_pieces.remove(target)
+
+        piece.row = end_row
+        piece.col = end_col
+
+        piece.has_moved = True
+
+        if (
+            piece.obj == "Pawn"
+            and
+            (
+                end_row == 0
+                or
+                end_row == 7
+            )
+        ):
+
+            if piece.color == "white":
+                pieces = self.white_pieces
+            else:
+                pieces = self.black_pieces
+
+            pieces.remove(piece)
+
+            if promotion_piece == "r":
+                pieces.append(
+                    Rook(end_row, end_col, piece.color)
+                )
+
+            elif promotion_piece == "b":
+                pieces.append(
+                    Bishop(end_row, end_col, piece.color)
+                )
+
+            elif promotion_piece == "n":
+                pieces.append(
+                    Knight(end_row, end_col, piece.color)
+                )
+
+            else:
+
+                pieces.append(
+                    Queen(end_row, end_col, piece.color)
+                )
+
+        self.last_move = (
+            piece,
+            start_row,
+            start_col,
+            end_row,
+            end_col
+        )
+
+        self.move_history.append(notation)
+
+        self.turn = (
+            "black"
+            if self.turn == "white"
+            else "white"
+        )
+
+        if self.is_checkmate(self.turn):
+
+            self.game_over = True
+
+            self.winner = (
+                "black"
+                if self.turn == "white"
+                else "white"
+            )
+
+        elif self.is_stalemate(self.turn):
+
+            self.game_over = True
+            self.is_draw = True
+
+        return True
